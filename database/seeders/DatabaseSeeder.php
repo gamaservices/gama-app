@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()
             ->create([
-                'name'  => 'Master',
+                'name' => 'Master',
                 'email' => 'master@gama.services',
             ]);
     }
