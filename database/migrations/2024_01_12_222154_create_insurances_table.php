@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('policy_number');
             $table->string('type');
             $table->string('company');
-            $table->timestamp('start_at');
-            $table->timestamp('expired_at');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
 
             $table->foreignId('property_id')->constrained('properties');

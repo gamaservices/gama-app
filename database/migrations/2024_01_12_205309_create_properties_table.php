@@ -25,7 +25,7 @@ return new class extends Migration
             $table->tinyInteger('ownership_percentage');
 
             $table->timestamp('disable_at')->nullable();
-            $table->timestamp('acquired_at');
+            $table->timestamp('acquired_at')->nullable();
             $table->timestamps();
 
             $table->softDeletes();
