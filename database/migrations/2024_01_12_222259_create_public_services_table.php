@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('public_services', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['water', 'electricity', 'gas']);
+            $table->string('type');
             $table->string('company');
             $table->boolean('is_domiciled');
             $table->timestamps();

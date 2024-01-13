@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('escritura');
             $table->string('neighborhood')->nullable();
             $table->string('address');
-            $table->enum('type', ['rural', 'urban']);
+            $table->string('type');
             $table->boolean('is_horizontal');
             $table->float('area');
-            $table->enum('conservation_state', ['good', 'normal', 'bad']);
+            $table->string('conservation_state');
             $table->string('owner');
             $table->tinyInteger('ownership_percentage');
 
