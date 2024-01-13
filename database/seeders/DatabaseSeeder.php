@@ -15,5 +15,11 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Master',
                 'email' => 'master@gama.services',
             ]);
+
+        $this->call([
+            StateSeeder::class,
+            CitySeeder::class,
+            PropertySeeder::class,
+        ]);
     }
 }
