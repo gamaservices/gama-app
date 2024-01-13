@@ -15,8 +15,7 @@ class NotaryOfficeFactory extends Factory
     public function definition(): array
     {
         return [
-            'city_id' => fake()->numberBetween(1, 8),
-            'number' => fake()->numberBetween(1, 8),
+
         ];
     }
 }

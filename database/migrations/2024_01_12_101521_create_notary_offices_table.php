@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('notary_offices', function (Blueprint $table) {
             $table->id();
-            $table->char('number', 2);
+            $table->tinyInteger('number');
             $table->timestamps();
             $table->foreignId('state_id')->constrained('states');
             $table->foreignId('city_id')->constrained('cities');

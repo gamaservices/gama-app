@@ -21,18 +21,24 @@ class PropertySeeder extends Seeder
             ->has(PublicService::factory()->count(3))
             ->for(NotaryOffice::factory()->state([
                 'state_id' => $antioquia_id,
+                'city_id' => random_int(1, 8),
+                'number' => random_int(1, 20),
             ]))
             ->create([
                 'state_id' => $antioquia_id,
+                'city_id' => random_int(1, 8)
             ]);
 
         Property::factory()->count(100)->has(Insurance::factory()->count(2))
             ->has(PublicService::factory()->count(3))
             ->for(NotaryOffice::factory()->state([
                 'state_id' => $cundinamarca_id,
+                'city_id' => random_int(9, 16),
+                'number' => random_int(1, 20),
             ]))
             ->create([
                 'state_id' => $cundinamarca_id,
+                'city_id' => random_int(9, 16)
             ]);
     }
 }
