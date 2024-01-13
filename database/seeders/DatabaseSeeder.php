@@ -16,6 +16,12 @@ class DatabaseSeeder extends Seeder
                 'email' => 'master@gama.services',
             ]);
 
+        User::factory()
+            ->create([
+                'name' => 'Admin',
+                'email' => 'admin@gestioncorporativa.com.co',
+            ]);
+
         $this->call([
             StateSeeder::class,
             CitySeeder::class,
