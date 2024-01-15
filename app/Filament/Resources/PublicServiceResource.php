@@ -2,18 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PublicServiceResource\Pages\CreatePublicService;
-use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
-use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\PublicService;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -24,13 +19,14 @@ class PublicServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'property_id';
+
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('property_id')
-                    ->relationship('property', 'id')
-                    ->required(),
                 TextInput::make('type')
                     ->required()
                     ->maxLength(255),
@@ -64,22 +60,10 @@ class PublicServiceResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->actions([
-                EditAction::make(),
-            ])
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => ListPublicServices::route('/'),
-            'create' => CreatePublicService::route('/create'),
-            'edit' => EditPublicService::route('/{record}/edit'),
-        ];
     }
 }

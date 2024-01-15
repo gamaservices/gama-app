@@ -11,6 +11,7 @@ class Insurance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'property_id',
         'policy_number',
         'type',
         'company',
