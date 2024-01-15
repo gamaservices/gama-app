@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InsuranceResource\Pages;
 use App\Models\Insurance;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,12 +15,17 @@ class InsuranceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'policy_number';
+
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('property_id')
                     ->relationship('property', 'id')
+                    ->hidden()
                     ->required(),
                 Forms\Components\TextInput::make('policy_number')
                     ->required()
@@ -70,9 +74,6 @@ class InsuranceResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -84,15 +85,6 @@ class InsuranceResource extends Resource
     {
         return [
             //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListInsurances::route('/'),
-            'create' => Pages\CreateInsurance::route('/create'),
-            'edit' => Pages\EditInsurance::route('/{record}/edit'),
         ];
     }
 }
