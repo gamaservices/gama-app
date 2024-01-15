@@ -2,12 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PublicServiceResource\Pages;
+use App\Filament\Resources\PublicServiceResource\Pages\CreatePublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\PublicService;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class PublicServiceResource extends Resource
@@ -20,16 +28,16 @@ class PublicServiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('property_id')
+                Select::make('property_id')
                     ->relationship('property', 'id')
                     ->required(),
-                Forms\Components\TextInput::make('type')
+                TextInput::make('type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('company')
+                TextInput::make('company')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_domiciled')
+                Toggle::make('is_domiciled')
                     ->required(),
             ]);
     }
@@ -38,50 +46,40 @@ class PublicServiceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('property.id')
+                TextColumn::make('property.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('company')
+                TextColumn::make('company')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_domiciled')
+                IconColumn::make('is_domiciled')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPublicServices::route('/'),
-            'create' => Pages\CreatePublicService::route('/create'),
-            'edit' => Pages\EditPublicService::route('/{record}/edit'),
+            'index' => ListPublicServices::route('/'),
+            'create' => CreatePublicService::route('/create'),
+            'edit' => EditPublicService::route('/{record}/edit'),
         ];
     }
 }
