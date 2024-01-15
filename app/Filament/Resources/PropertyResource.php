@@ -6,6 +6,9 @@ use App\Filament\Resources\InsuranceResource\Pages\CreateInsurance;
 use App\Filament\Resources\InsuranceResource\Pages\EditInsurance;
 use App\Filament\Resources\InsuranceResource\Pages\ListInsurances;
 use App\Filament\Resources\PropertyResource\Pages;
+use App\Filament\Resources\PublicServiceResource\Pages\CreatePublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\Property;
 use Filament\Facades\Filament;
 use Filament\Forms;
@@ -152,6 +155,12 @@ class PropertyResource extends Resource
                     ->url(fn (Property $record): string => self::getUrl('insurances.index', [
                         'parent' => $record->id,
                     ])),
+                Action::make('Servicios Públicos')
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (Property $record): string => self::getUrl('public_services.index', [
+                        'parent' => $record->id,
+                    ])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -180,6 +189,10 @@ class PropertyResource extends Resource
             'insurances.index' => ListInsurances::route('/{parent}/insurances'),
             'insurances.create' => CreateInsurance::route('/{parent}/insurances/create'),
             'insurances.edit' => EditInsurance::route('/{parent}/insurances/{record}/edit'),
+
+            'public_services.index' => ListPublicServices::route('/{parent}/public_services'),
+            'public_services.create' => CreatePublicService::route('/{parent}/public_services/create'),
+            'public_services.edit' => EditPublicService::route('/{parent}/public_services/{record}/edit'),
         ];
     }
 
