@@ -2,15 +2,37 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PropertyResource\Pages;
+use App\Filament\Resources\InsuranceResource\Pages\CreateInsurance;
+use App\Filament\Resources\InsuranceResource\Pages\EditInsurance;
+use App\Filament\Resources\InsuranceResource\Pages\ListInsurances;
+use App\Filament\Resources\PropertyResource\Pages\CreateProperty;
+use App\Filament\Resources\PropertyResource\Pages\EditProperty;
+use App\Filament\Resources\PropertyResource\Pages\ListProperties;
+use App\Filament\Resources\PublicServiceResource\Pages\CreatePublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\Property;
-use Filament\Forms;
+use Filament\Facades\Filament;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Route;
 
 class PropertyResource extends Resource
 {
@@ -18,58 +40,63 @@ class PropertyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'matricula_inmobiliaria';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('state_id')
+                Select::make('state_id')
                     ->relationship('state', 'name')
                     ->required(),
-                Forms\Components\Select::make('city_id')
+                Select::make('city_id')
                     ->relationship('city', 'name')
                     ->required(),
-                Forms\Components\Select::make('notary_office_id')
+                Select::make('notary_office_id')
                     ->relationship('notaryOffice', 'id')
                     ->required(),
-                Forms\Components\TextInput::make('customer')
+                TextInput::make('customer')
                     ->required()
                     ->maxLength(255)
                     ->default('Banco de Bogotá'),
-                Forms\Components\TextInput::make('contract')
+                TextInput::make('contract')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('matricula_inmobiliaria')
+                TextInput::make('matricula_inmobiliaria')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('codigo_catastral')
+                TextInput::make('codigo_catastral')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('escritura')
+                TextInput::make('escritura')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('neighborhood')
+                TextInput::make('neighborhood')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('address')
+                TextInput::make('address')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                TextInput::make('type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_horizontal')
+                Toggle::make('is_horizontal')
                     ->required(),
-                Forms\Components\TextInput::make('area')
+                TextInput::make('area')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('conservation_state')
+                TextInput::make('conservation_state')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('owner')
+                TextInput::make('owner')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('ownership_percentage')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('disable_at'),
-                Forms\Components\DateTimePicker::make('acquired_at')
+                TextInput::make('ownership_percentage')
+                    ->numeric()
+                    ->required()
+                    ->minValue(0.1)
+                    ->maxValue(100),
+                DatePicker::make('disable_at'),
+                DatePicker::make('acquired_at')
                     ->required(),
             ]);
     }
@@ -78,89 +105,103 @@ class PropertyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('state.name')
+                TextColumn::make('state.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
+                TextColumn::make('city.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('notaryOffice.id')
+                TextColumn::make('notaryOffice.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer')
+                TextColumn::make('customer')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('contract')
+                TextColumn::make('contract')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('matricula_inmobiliaria')
+                TextColumn::make('matricula_inmobiliaria')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('codigo_catastral')
+                TextColumn::make('codigo_catastral')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('escritura')
+                TextColumn::make('escritura')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('neighborhood')
+                TextColumn::make('neighborhood')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('address')
+                TextColumn::make('address')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_horizontal')
+                IconColumn::make('is_horizontal')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('area')
+                TextColumn::make('area')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('conservation_state')
+                TextColumn::make('conservation_state')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('owner')
+                TextColumn::make('owner')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('ownership_percentage')
+                IconColumn::make('ownership_percentage')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('disable_at')
+                TextColumn::make('disable_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('acquired_at')
+                TextColumn::make('acquired_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Action::make('Seguros')
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (Property $record): string => self::getUrl('insurances.index', [
+                        'parent' => $record->id,
+                    ])),
+                Action::make('Servicios Públicos')
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (Property $record): string => self::getUrl('public_services.index', [
+                        'parent' => $record->id,
+                    ])),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ForceDeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProperties::route('/'),
-            'create' => Pages\CreateProperty::route('/create'),
-            'edit' => Pages\EditProperty::route('/{record}/edit'),
+
+            'index' => ListProperties::route('/'),
+            'create' => CreateProperty::route('/create'),
+            'edit' => EditProperty::route('/{record}/edit'),
+
+            'insurances.index' => ListInsurances::route('/{parent}/insurances'),
+            'insurances.create' => CreateInsurance::route('/{parent}/insurances/create'),
+            'insurances.edit' => EditInsurance::route('/{parent}/insurances/{record}/edit'),
+
+            'public_services.index' => ListPublicServices::route('/{parent}/public_services'),
+            'public_services.create' => CreatePublicService::route('/{parent}/public_services/create'),
+            'public_services.edit' => EditPublicService::route('/{parent}/public_services/{record}/edit'),
         ];
     }
 
@@ -170,5 +211,20 @@ class PropertyResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getUrl(string $name = 'index', array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null): string
+    {
+        $parameters['tenant'] ??= ($tenant ?? Filament::getTenant());
+
+        $routeBaseName = static::getRouteBaseName(panel: $panel);
+        $routeFullName = "{$routeBaseName}.{$name}";
+        $routePath = Route::getRoutes()->getByName($routeFullName)->uri();
+
+        if (str($routePath)->contains('{parent}')) {
+            $parameters['parent'] ??= (request()->route('parent') ?? request()->input('parent'));
+        }
+
+        return route($routeFullName, $parameters, $isAbsolute);
     }
 }
