@@ -3,10 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Models\Insurance;
-use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class InsuranceResource extends Resource
@@ -23,18 +26,18 @@ class InsuranceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('policy_number')
+                TextInput::make('policy_number')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                TextInput::make('type')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('company')
+                TextInput::make('company')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start_at')
+                DatePicker::make('start_at')
                     ->required(),
-                Forms\Components\DateTimePicker::make('expired_at')
+                DatePicker::make('expired_at')
                     ->required(),
             ]);
     }
@@ -43,44 +46,34 @@ class InsuranceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('property.id')
+                TextColumn::make('property.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('policy_number')
+                TextColumn::make('policy_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('company')
+                TextColumn::make('company')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('start_at')
+                TextColumn::make('start_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('expired_at')
+                TextColumn::make('expired_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 }

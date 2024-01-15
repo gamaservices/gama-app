@@ -2,12 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NotaryOfficeResource\Pages;
+use App\Filament\Resources\NotaryOfficeResource\Pages\CreateNotaryOffice;
+use App\Filament\Resources\NotaryOfficeResource\Pages\EditNotaryOffice;
+use App\Filament\Resources\NotaryOfficeResource\Pages\ListNotaryOffices;
 use App\Models\NotaryOffice;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class NotaryOfficeResource extends Resource
@@ -20,15 +26,17 @@ class NotaryOfficeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('state_id')
+                Select::make('state_id')
                     ->relationship('state', 'name')
                     ->required(),
-                Forms\Components\Select::make('city_id')
+                Select::make('city_id')
                     ->relationship('city', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('number')
+                TextInput::make('number')
+                    ->numeric()
                     ->required()
-                    ->maxLength(2),
+                    ->minValue(1)
+                    ->maxValue(20),
             ]);
     }
 
@@ -36,49 +44,39 @@ class NotaryOfficeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('state.name')
+                TextColumn::make('state.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
+                TextColumn::make('city.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('number')
+                TextColumn::make('number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNotaryOffices::route('/'),
-            'create' => Pages\CreateNotaryOffice::route('/create'),
-            'edit' => Pages\EditNotaryOffice::route('/{record}/edit'),
+            'index' => ListNotaryOffices::route('/'),
+            'create' => CreateNotaryOffice::route('/create'),
+            'edit' => EditNotaryOffice::route('/{record}/edit'),
         ];
     }
 }
