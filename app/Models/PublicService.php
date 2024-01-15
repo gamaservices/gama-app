@@ -11,6 +11,7 @@ class PublicService extends Model
     use HasFactory;
 
     protected $fillable = [
+        'property_id',
         'type',
         'company',
         'is_domiciled',
