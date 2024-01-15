@@ -2,21 +2,33 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\InsuranceResource\Pages\CreateInsurance;
+use App\Filament\Resources\InsuranceResource\Pages\EditInsurance;
+use App\Filament\Resources\InsuranceResource\Pages\ListInsurances;
 use App\Filament\Resources\PropertyResource\Pages;
+use App\Filament\Resources\PublicServiceResource\Pages\CreatePublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
+use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\Property;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Route;
 
 class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $recordTitleAttribute = 'matricula_inmobiliaria';
 
     public static function form(Form $form): Form
     {
@@ -137,6 +149,18 @@ class PropertyResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('Seguros')
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (Property $record): string => self::getUrl('insurances.index', [
+                        'parent' => $record->id,
+                    ])),
+                Action::make('Servicios Públicos')
+                    ->color('success')
+                    ->icon('heroicon-m-academic-cap')
+                    ->url(fn (Property $record): string => self::getUrl('public_services.index', [
+                        'parent' => $record->id,
+                    ])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -161,6 +185,14 @@ class PropertyResource extends Resource
             'index' => Pages\ListProperties::route('/'),
             'create' => Pages\CreateProperty::route('/create'),
             'edit' => Pages\EditProperty::route('/{record}/edit'),
+
+            'insurances.index' => ListInsurances::route('/{parent}/insurances'),
+            'insurances.create' => CreateInsurance::route('/{parent}/insurances/create'),
+            'insurances.edit' => EditInsurance::route('/{parent}/insurances/{record}/edit'),
+
+            'public_services.index' => ListPublicServices::route('/{parent}/public_services'),
+            'public_services.create' => CreatePublicService::route('/{parent}/public_services/create'),
+            'public_services.edit' => EditPublicService::route('/{parent}/public_services/{record}/edit'),
         ];
     }
 
@@ -170,5 +202,20 @@ class PropertyResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    public static function getUrl(string $name = 'index', array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null): string
+    {
+        $parameters['tenant'] ??= ($tenant ?? Filament::getTenant());
+
+        $routeBaseName = static::getRouteBaseName(panel: $panel);
+        $routeFullName = "{$routeBaseName}.{$name}";
+        $routePath = Route::getRoutes()->getByName($routeFullName)->uri();
+
+        if (str($routePath)->contains('{parent}')) {
+            $parameters['parent'] ??= (request()->route('parent') ?? request()->input('parent'));
+        }
+
+        return route($routeFullName, $parameters, $isAbsolute);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PublicServiceResource\Pages;
 use App\Models\PublicService;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,13 +15,14 @@ class PublicServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $recordTitleAttribute = 'property_id';
+
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('property_id')
-                    ->relationship('property', 'id')
-                    ->required(),
                 Forms\Components\TextInput::make('type')
                     ->required()
                     ->maxLength(255),
@@ -59,9 +59,6 @@ class PublicServiceResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -73,15 +70,6 @@ class PublicServiceResource extends Resource
     {
         return [
             //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListPublicServices::route('/'),
-            'create' => Pages\CreatePublicService::route('/create'),
-            'edit' => Pages\EditPublicService::route('/{record}/edit'),
         ];
     }
 }
