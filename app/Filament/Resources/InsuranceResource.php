@@ -23,10 +23,6 @@ class InsuranceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('property_id')
-                    ->relationship('property', 'id')
-                    ->hidden()
-                    ->required(),
                 Forms\Components\TextInput::make('policy_number')
                     ->required()
                     ->maxLength(255),
