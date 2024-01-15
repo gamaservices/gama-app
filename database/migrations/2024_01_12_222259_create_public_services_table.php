@@ -10,12 +10,11 @@ return new class extends Migration
     {
         Schema::create('public_services', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('property_id')->constrained('properties');
             $table->string('type');
             $table->string('company');
             $table->boolean('is_domiciled');
             $table->timestamps();
-
-            $table->foreignId('property_id')->constrained('properties');
         });
     }
 
