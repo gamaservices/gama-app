@@ -30,15 +30,18 @@ class NotaryOfficeResource extends Resource
             ->schema([
                 Select::make('state_id')
                     ->relationship('state', 'name')
-                    ->required(),
+                    ->required()
+                    ->label('Departamento'),
                 Select::make('city_id')
                     ->relationship('city', 'name')
-                    ->required(),
+                    ->required()
+                    ->label('Ciudad'),
                 TextInput::make('number')
                     ->numeric()
                     ->required()
                     ->minValue(1)
-                    ->maxValue(20),
+                    ->maxValue(20)
+                    ->label('Número de notaría'),
             ]);
     }
 
@@ -48,20 +51,25 @@ class NotaryOfficeResource extends Resource
             ->columns([
                 TextColumn::make('state.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Departamento'),
                 TextColumn::make('city.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Ciudad'),
                 TextColumn::make('number')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Número de notaría'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Creado en'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Actualizado en'),
             ])
             ->actions([
                 EditAction::make(),

@@ -23,18 +23,23 @@ class PublicServiceResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
+    protected static ?string $modelLabel = 'Servicios públicos';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('type')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Tipo'),
                 TextInput::make('company')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Compañía'),
                 Toggle::make('is_domiciled')
-                    ->required(),
+                    ->required()
+                    ->label('Es domiciliado'),
             ]);
     }
 
@@ -44,21 +49,27 @@ class PublicServiceResource extends Resource
             ->columns([
                 TextColumn::make('property.id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('ID BRP'),
                 TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Tipo de servicio'),
                 TextColumn::make('company')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Compañía'),
                 IconColumn::make('is_domiciled')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Es domiciliado'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Creado en'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Actualizado en'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
