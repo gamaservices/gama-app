@@ -135,55 +135,75 @@ class PropertyResource extends Resource
                     ->sortable(),
                 TextColumn::make('city.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Ciudad o municipio'),
                 TextColumn::make('notaryOffice.id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Notaría'),
                 TextColumn::make('customer')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Cliente'),
                 TextColumn::make('contract')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('ID BRP'),
                 TextColumn::make('matricula_inmobiliaria')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Matrícula Inmobiliaria'),
                 TextColumn::make('codigo_catastral')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Código Catastral'),
                 TextColumn::make('escritura')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('No. de Escritura'),
                 TextColumn::make('neighborhood')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Barrio o Vereda'),
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Dirección'),
                 TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Tipo de predio'),
                 IconColumn::make('is_horizontal')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Es Propiedad Horizontal'),
                 TextColumn::make('area')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Área'),
                 TextColumn::make('conservation_state')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Estado de conservación'),
                 TextColumn::make('owner')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Propietario'),
                 IconColumn::make('ownership_percentage')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('% de derechos'),
                 TextColumn::make('disable_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de deshabilitación'),
                 TextColumn::make('acquired_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de apertura'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Creado el'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Actualizado el'),
                 TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Eliminado el'),
             ])
             ->filters([
                 TrashedFilter::make(),
