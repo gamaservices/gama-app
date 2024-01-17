@@ -14,6 +14,7 @@ use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\Property;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -42,62 +43,85 @@ class PropertyResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'matricula_inmobiliaria';
 
+    protected static ?string $modelLabel = 'Inmueble';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                TextInput::make('contract')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('ID BRP'),
+                TextInput::make('matricula_inmobiliaria')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('Matrícula Inmobiliaria'),
+                TextInput::make('codigo_catastral')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('Código Catastral'),
                 Select::make('state_id')
                     ->relationship('state', 'name')
-                    ->required(),
+                    ->required()
+                    ->label('Departamento'),
                 Select::make('city_id')
                     ->relationship('city', 'name')
-                    ->required(),
+                    ->required()
+                    ->label('Ciudad o municipio'),
+                TextInput::make('neighborhood')
+                    ->maxLength(255)
+                    ->label('Barrio o Vereda'),
+                TextInput::make('address')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('Dirección'),
+                TextInput::make('escritura')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('No. de Escritura'),
                 Select::make('notary_office_id')
                     ->relationship('notaryOffice', 'id')
-                    ->required(),
+                    ->required()
+                    ->label('Notaría'),
                 TextInput::make('customer')
                     ->required()
                     ->maxLength(255)
-                    ->default('Banco de Bogotá'),
-                TextInput::make('contract')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('matricula_inmobiliaria')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('codigo_catastral')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('escritura')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('neighborhood')
-                    ->maxLength(255),
-                TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
+                    ->default('Banco de Bogotá')
+                    ->label('Cliente'),
+                Radio::make('type')
+                    ->options([
+                        'rural' => 'Rural',
+                        'urbano' => 'Urbano',
+                    ])
+                    ->label('Tipo de predio'),
                 Toggle::make('is_horizontal')
-                    ->required(),
+                    ->required()
+                    ->inline()
+                    ->label('Es Propiedad Horizontal'),
                 TextInput::make('area')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->label('Área'),
                 TextInput::make('conservation_state')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Estado de conservación'),
                 TextInput::make('owner')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Propietario'),
                 TextInput::make('ownership_percentage')
                     ->numeric()
                     ->required()
                     ->minValue(0.1)
-                    ->maxValue(100),
-                DatePicker::make('disable_at'),
+                    ->maxValue(100)
+                    ->label('% de derechos'),
+                DatePicker::make('disable_at')
+                    ->label('Fecha de deshabilitación'),
                 DatePicker::make('acquired_at')
-                    ->required(),
+                    ->required()
+                    ->label('Fecha de apertura'),
             ]);
     }
 
@@ -106,59 +130,80 @@ class PropertyResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('state.name')
+                    ->label('Departamento')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('city.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Ciudad o municipio'),
                 TextColumn::make('notaryOffice.id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Notaría'),
                 TextColumn::make('customer')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Cliente'),
                 TextColumn::make('contract')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('ID BRP'),
                 TextColumn::make('matricula_inmobiliaria')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Matrícula Inmobiliaria'),
                 TextColumn::make('codigo_catastral')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Código Catastral'),
                 TextColumn::make('escritura')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('No. de Escritura'),
                 TextColumn::make('neighborhood')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Barrio o Vereda'),
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Dirección'),
                 TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Tipo de predio'),
                 IconColumn::make('is_horizontal')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Es Propiedad Horizontal'),
                 TextColumn::make('area')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Área'),
                 TextColumn::make('conservation_state')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Estado de conservación'),
                 TextColumn::make('owner')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Propietario'),
                 IconColumn::make('ownership_percentage')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('% de derechos'),
                 TextColumn::make('disable_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de deshabilitación'),
                 TextColumn::make('acquired_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de apertura'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Creado el'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Actualizado el'),
                 TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Eliminado el'),
             ])
             ->filters([
                 TrashedFilter::make(),

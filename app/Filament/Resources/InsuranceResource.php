@@ -28,17 +28,22 @@ class InsuranceResource extends Resource
             ->schema([
                 TextInput::make('policy_number')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Número de póliza'),
                 TextInput::make('type')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Tipo de póliza'),
                 TextInput::make('company')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->label('Compañía aseguradora'),
                 DatePicker::make('start_at')
-                    ->required(),
+                    ->required()
+                    ->label('Fecha de inicio'),
                 DatePicker::make('expired_at')
-                    ->required(),
+                    ->required()
+                    ->label('Fecha de vencimiento'),
             ]);
     }
 
@@ -48,27 +53,35 @@ class InsuranceResource extends Resource
             ->columns([
                 TextColumn::make('property.id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('ID BRP'),
                 TextColumn::make('policy_number')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Número de póliza'),
                 TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Tipo de póliza'),
                 TextColumn::make('company')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('Compañía aseguradora'),
                 TextColumn::make('start_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de inicio'),
                 TextColumn::make('expired_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Fecha de vencimiento'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Creado en'),
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Actualizado en'),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
