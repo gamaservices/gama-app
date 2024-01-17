@@ -14,6 +14,9 @@ class Property extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'state_id',
+        'city_id',
+        'notary_office_id',
         'customer',
         'contract',
         'matricula_inmobiliaria',
@@ -22,7 +25,7 @@ class Property extends Model
         'neighborhood',
         'address',
         'type',
-        'horizontal',
+        'is_horizontal',
         'area',
         'conservation_state',
         'owner',
@@ -32,6 +35,7 @@ class Property extends Model
     protected $casts = [
         'disable_at' => 'datetime',
         'acquired_at' => 'datetime',
+        'is_horizontal' => 'boolean',
     ];
 
     public function state(): BelongsTo
