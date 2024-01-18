@@ -50,7 +50,7 @@ class PropertyResource extends Resource
         return $form
             ->schema([
                 TextInput::make('contract')
-                    ->required()
+
                     ->maxLength(255)
                     ->label('ID BRP'),
                 TextInput::make('matricula_inmobiliaria')
@@ -58,34 +58,27 @@ class PropertyResource extends Resource
                     ->maxLength(255)
                     ->label('Matrícula Inmobiliaria'),
                 TextInput::make('codigo_catastral')
-                    ->required()
                     ->maxLength(255)
                     ->label('Código Catastral'),
                 Select::make('state_id')
                     ->relationship('state', 'name')
-                    ->required()
                     ->label('Departamento'),
                 Select::make('city_id')
                     ->relationship('city', 'name')
-                    ->required()
                     ->label('Ciudad o municipio'),
                 TextInput::make('neighborhood')
                     ->maxLength(255)
                     ->label('Barrio o Vereda'),
                 TextInput::make('address')
-                    ->required()
                     ->maxLength(255)
                     ->label('Dirección'),
                 TextInput::make('escritura')
-                    ->required()
                     ->maxLength(255)
                     ->label('No. de Escritura'),
                 Select::make('notary_office_id')
                     ->relationship('notaryOffice', 'id')
-                    ->required()
                     ->label('Notaría'),
                 TextInput::make('customer')
-                    ->required()
                     ->maxLength(255)
                     ->default('Banco de Bogotá')
                     ->label('Cliente'),
@@ -96,31 +89,25 @@ class PropertyResource extends Resource
                     ])
                     ->label('Tipo de predio'),
                 Toggle::make('is_horizontal')
-                    ->required()
                     ->inline()
                     ->label('Es Propiedad Horizontal'),
                 TextInput::make('area')
-                    ->required()
                     ->numeric()
                     ->label('Área'),
                 TextInput::make('conservation_state')
-                    ->required()
                     ->maxLength(255)
                     ->label('Estado de conservación'),
                 TextInput::make('owner')
-                    ->required()
                     ->maxLength(255)
                     ->label('Propietario'),
                 TextInput::make('ownership_percentage')
                     ->numeric()
-                    ->required()
                     ->minValue(0.1)
                     ->maxValue(100)
                     ->label('% de derechos'),
                 DatePicker::make('disable_at')
                     ->label('Fecha de deshabilitación'),
                 DatePicker::make('acquired_at')
-                    ->required()
                     ->label('Fecha de apertura'),
             ]);
     }
