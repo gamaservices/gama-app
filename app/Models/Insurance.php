@@ -20,8 +20,8 @@ class Insurance extends Model
     ];
 
     protected $casts = [
-        'start_at' => 'datetime',
-        'expired_at' => 'datetime',
+        'start_at' => 'date',
+        'expired_at' => 'date',
     ];
 
     public function property(): BelongsTo
