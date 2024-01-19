@@ -5,7 +5,6 @@ use App\Filament\Resources\PropertyResource\Pages\CreateProperty;
 use App\Filament\Resources\PropertyResource\Pages\EditProperty;
 use App\Filament\Resources\PropertyResource\Pages\ListProperties;
 use App\Models\Property;
-use Carbon\Carbon;
 use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
@@ -106,5 +105,5 @@ it('can delete a property', function () {
         ->callAction(DeleteAction::class);
 
     expect($property->refresh())
-        ->deleted_at->toBeInstanceOf(Carbon::class);
+        ->deleted_at->format('Y-m-d')->toBe(today()->format('Y-m-d'));
 });
