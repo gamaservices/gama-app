@@ -106,7 +106,7 @@ it('can retrieve data', function () {
         ]);
 });
 
-it('can save a insurance', function () {
+it('can save an insurance', function () {
     $parent = Property::factory()
         ->has(Insurance::factory())
         ->create();
@@ -118,7 +118,7 @@ it('can save a insurance', function () {
 
     livewire(EditInsurance::class, [
         'parent' => $parent,
-        'record' => $parent->insurances()->first()->getRouteKey(),
+        'record' => $parent->insurances->first()->getRouteKey(),
     ])
         ->fillForm([
             'policy_number' => $newData->policy_number,
@@ -130,7 +130,7 @@ it('can save a insurance', function () {
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($parent->insurances()->first()->refresh())
+    expect($parent->insurances->first()->refresh())
         ->policy_number->toBe($newData->policy_number)
         ->type->toBe($newData->type)
         ->company->toBe($newData->company)
@@ -155,7 +155,7 @@ it('can validate edit input', function () {
         ->assertHasFormErrors(['policy_number' => 'required']);
 });
 
-it('can delete a insurance', function () {
+it('can delete an insurance', function () {
     $parent = Property::factory()
         ->has(Insurance::factory()->count(10))
         ->create();
