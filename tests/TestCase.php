@@ -22,17 +22,6 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->state = State::factory()->create();
-
-        $this->city = City::factory()
-            ->for($this->state)
-            ->create();
-
-        $this->notaryOffice = NotaryOffice::factory()
-            ->for($this->state)
-            ->for($this->city)
-            ->create();
-
-        $this->actingAs(User::factory()->create());
+       $this->actingAs(User::factory()->create());
     }
 }
