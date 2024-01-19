@@ -33,8 +33,8 @@ class Property extends Model
     ];
 
     protected $casts = [
-        'disable_at' => 'datetime',
-        'acquired_at' => 'datetime',
+        'disable_at' => 'timestamp',
+        'acquired_at' => 'timestamp',
         'is_horizontal' => 'boolean',
     ];
 
