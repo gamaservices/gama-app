@@ -15,7 +15,6 @@ class NotaryOfficeFactory extends Factory
     public function definition(): array
     {
         return [
-            'city_id' => random_int(1, 8),
             'number' => random_int(1, 8),
         ];
     }
