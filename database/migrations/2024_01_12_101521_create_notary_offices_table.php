@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('number');
             $table->timestamps();
-            $table->foreignId('state_id')->constrained('states');
-            $table->foreignId('city_id')->constrained('cities');
+            $table->foreignId('state_id')->nullable()->constrained('states');
+            $table->foreignId('city_id')->nullable()->constrained('cities');
         });
     }
 
