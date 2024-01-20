@@ -247,53 +247,9 @@ footer > p {
 }
 
 /* ==== MEDIA QURIES FOR RESPONSIVE DESIGN ==== */
-@media screen and (min-width: 768px) {
-    .toggle_btn {
-        display: none;
-    }
-    .nav_menu {
-        display: block;
-    }
-}
-
 @media screen and (max-width: 768px) {
     .logo h2 {
         font-size: 23px;
-    }
-    .nav_menu {
-        position: fixed;
-        width: 93%;
-        height: 100%;
-        display: block;
-        top: 2.5%;
-        right: -100%;
-        background-color: #fff;
-        padding: 3rem;
-        border-radius: 10px;
-        box-shadow: 0 0.5rem 1.5rem rgba(22, 28, 45, 0.1);
-        z-index: 50;
-        transition: 0.4s;
-    }
-    .nav_menu_list {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-top: 4rem;
-    }
-    .nav_menu_list .nav_menu_item {
-        margin: 1rem 0;
-    }
-    .nav_menu_item .nav_menu_link {
-        font-size: 18px;
-    }
-    .close_btn {
-        display: block;
-        position: absolute;
-        right: 10%;
-        font-size: 25px;
-        color: #50689e;
-    }
-    .close_btn:hover {
-        color: #000;
     }
     .wrapper {
         padding: 0 0.7rem;
@@ -303,12 +259,6 @@ footer > p {
     }
     .main-heading {
         font-size: 35px;
-    }
-    .view_more_btn {
-        width: 140px;
-        height: 55px;
-        font-size: 13.5px;
-        margin-right: 1rem;
     }
     .grid-cols-3 {
         grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));

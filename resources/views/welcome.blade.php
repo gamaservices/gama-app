@@ -7,10 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>GAMA - Gestión de Activos</title>
 
     <!-- Favicon-->
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     <!-- Fonts -->
     <link
@@ -39,7 +39,7 @@
             <div class="grid-item-1">
                 <h1 class="main-heading">Bienvenido a <span>GAMA.</span></h1>
                 <br />
-                <h3>Gestión, Administración y Manejo de Activos.</h3>
+                <h3 class="slogan">Gestión, Administración y Manejo de Activos.</h3>
                 <p class="info-text">
                     La herramienta definitiva para la gestión eficiente de tus
                     activos. Simplifica tu vida empresarial al rastrear, administrar y
