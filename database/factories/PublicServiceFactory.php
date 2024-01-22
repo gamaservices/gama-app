@@ -15,8 +15,8 @@ class PublicServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'company' => 'EPM',
-            'type' => fake()->randomElements(['water', 'electricity', 'gas'])[0],
+            'company'      => 'EPM',
+            'type'         => fake()->randomElements(['water', 'electricity', 'gas'])[0],
             'is_domiciled' => fake()->boolean(),
         ];
     }

@@ -17,7 +17,7 @@ class CityFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Medellín',
+            'name'     => 'Medellín',
             'state_id' => 1,
         ];
     }

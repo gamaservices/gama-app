@@ -34,7 +34,7 @@ it('can render create page', function () {
 });
 
 it('can create an insurance', function () {
-    $parent = Property::factory()->create();
+    $parent  = Property::factory()->create();
     $newData = Insurance::factory()->make([
         'property_id' => $parent->id,
     ]);
@@ -44,21 +44,21 @@ it('can create an insurance', function () {
     ])
         ->fillForm([
             'policy_number' => $newData->policy_number,
-            'type' => $newData->type,
-            'company' => $newData->company,
-            'start_at' => $newData->start_at,
-            'expired_at' => $newData->expired_at,
+            'type'          => $newData->type,
+            'company'       => $newData->company,
+            'start_at'      => $newData->start_at,
+            'expired_at'    => $newData->expired_at,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Insurance::class, [
         'policy_number' => $newData->policy_number,
-        'type' => $newData->type,
-        'company' => $newData->company,
-        'start_at' => $newData->start_at,
-        'expired_at' => $newData->expired_at,
-        'property_id' => $newData->property_id,
+        'type'          => $newData->type,
+        'company'       => $newData->company,
+        'start_at'      => $newData->start_at,
+        'expired_at'    => $newData->expired_at,
+        'property_id'   => $newData->property_id,
     ]);
 });
 
@@ -98,11 +98,11 @@ it('can retrieve data', function () {
     ])
         ->assertFormSet([
             'policy_number' => $insurance->policy_number,
-            'type' => $insurance->type,
-            'company' => $insurance->company,
-            'start_at' => $insurance->start_at->format('Y-m-d'),
-            'expired_at' => $insurance->expired_at->format('Y-m-d'),
-            'property_id' => $insurance->property_id,
+            'type'          => $insurance->type,
+            'company'       => $insurance->company,
+            'start_at'      => $insurance->start_at->format('Y-m-d'),
+            'expired_at'    => $insurance->expired_at->format('Y-m-d'),
+            'property_id'   => $insurance->property_id,
         ]);
 });
 
@@ -122,10 +122,10 @@ it('can save an insurance', function () {
     ])
         ->fillForm([
             'policy_number' => $newData->policy_number,
-            'type' => $newData->type,
-            'company' => $newData->company,
-            'start_at' => $newData->start_at,
-            'expired_at' => $newData->expired_at,
+            'type'          => $newData->type,
+            'company'       => $newData->company,
+            'start_at'      => $newData->start_at,
+            'expired_at'    => $newData->expired_at,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
