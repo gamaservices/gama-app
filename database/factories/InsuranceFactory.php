@@ -17,9 +17,9 @@ class InsuranceFactory extends Factory
         return [
             'policy_number' => fake()->bothify('RC-####'),
             'type' => 'Responsabilidad Civíl',
-            'Company' => 'Seguros Sura',
-            'start_at' => fake()->date(max: '-1 year'),
-            'expired_at' => fake()->dateTimeBetween('-9 months', '+1 year'),
+            'company' => 'Seguros Sura',
+            'start_at' => fake()->dateTime('-1 year')->format('Y-m-d'),
+            'expired_at' => fake()->dateTimeBetween('-9 months', '+1 year')->format('Y-m-d'),
         ];
     }
 }

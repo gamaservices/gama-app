@@ -17,6 +17,10 @@ class PublicService extends Model
         'is_domiciled',
     ];
 
+    protected $casts = [
+        'is_domiciled' => 'boolean',
+    ];
+
     public function property(): BelongsTo
     {
         return $this->belongsTo(Property::class);

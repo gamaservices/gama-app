@@ -5,17 +5,20 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\NotaryOffice>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\State>
  */
-class NotaryOfficeFactory extends Factory
+class StateFactory extends Factory
 {
     /**
+     * Define the model's default state.
+     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'number' => random_int(1, 8),
+            'name' => 'Antioquia',
+            'code' => '01',
         ];
     }
 }

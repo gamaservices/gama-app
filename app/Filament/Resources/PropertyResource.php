@@ -50,7 +50,6 @@ class PropertyResource extends Resource
         return $form
             ->schema([
                 TextInput::make('contract')
-
                     ->maxLength(255)
                     ->label('ID BRP'),
                 TextInput::make('matricula_inmobiliaria')
@@ -117,11 +116,9 @@ class PropertyResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('state.name')
-                    ->label('Departamento')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Departamento'),
                 TextColumn::make('city.name')
-                    ->numeric()
                     ->sortable()
                     ->label('Ciudad o municipio'),
                 TextColumn::make('notaryOffice.id')
@@ -177,17 +174,17 @@ class PropertyResource extends Resource
                     ->sortable()
                     ->label('Fecha de apertura'),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Creado el'),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Actualizado el'),
                 TextColumn::make('deleted_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Eliminado el'),

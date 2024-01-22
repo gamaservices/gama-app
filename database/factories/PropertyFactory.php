@@ -29,7 +29,6 @@ class PropertyFactory extends Factory
             'owner' => 'Banco de Bogotá',
             'ownership_percentage' => fake()->numberBetween(0, 100),
             'acquired_at' => fake()->date(),
-            'city_id' => fake()->numberBetween(1, 8),
         ];
     }
 }

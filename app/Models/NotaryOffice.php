@@ -13,6 +13,8 @@ class NotaryOffice extends Model
 
     protected $fillable = [
         'number',
+        'state_id',
+        'city_id',
     ];
 
     public function state(): BelongsTo
