@@ -20,7 +20,7 @@ class Insurance extends Model
     ];
 
     protected $casts = [
-        'start_at' => 'date',
+        'start_at'   => 'date',
         'expired_at' => 'date',
     ];
 

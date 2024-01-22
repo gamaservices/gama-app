@@ -83,7 +83,7 @@ class PropertyResource extends Resource
                     ->label('Cliente'),
                 Radio::make('type')
                     ->options([
-                        'rural' => 'Rural',
+                        'rural'  => 'Rural',
                         'urbano' => 'Urbano',
                     ])
                     ->label('Tipo de predio'),
@@ -220,17 +220,17 @@ class PropertyResource extends Resource
     {
         return [
 
-            'index' => ListProperties::route('/'),
+            'index'  => ListProperties::route('/'),
             'create' => CreateProperty::route('/create'),
-            'edit' => EditProperty::route('/{record}/edit'),
+            'edit'   => EditProperty::route('/{record}/edit'),
 
-            'insurances.index' => ListInsurances::route('/{parent}/insurances'),
+            'insurances.index'  => ListInsurances::route('/{parent}/insurances'),
             'insurances.create' => CreateInsurance::route('/{parent}/insurances/create'),
-            'insurances.edit' => EditInsurance::route('/{parent}/insurances/{record}/edit'),
+            'insurances.edit'   => EditInsurance::route('/{parent}/insurances/{record}/edit'),
 
-            'public_services.index' => ListPublicServices::route('/{parent}/public_services'),
+            'public_services.index'  => ListPublicServices::route('/{parent}/public_services'),
             'public_services.create' => CreatePublicService::route('/{parent}/public_services/create'),
-            'public_services.edit' => EditPublicService::route('/{parent}/public_services/{record}/edit'),
+            'public_services.edit'   => EditPublicService::route('/{parent}/public_services/{record}/edit'),
         ];
     }
 
@@ -248,7 +248,7 @@ class PropertyResource extends Resource
 
         $routeBaseName = static::getRouteBaseName(panel: $panel);
         $routeFullName = "{$routeBaseName}.{$name}";
-        $routePath = Route::getRoutes()->getByName($routeFullName)->uri();
+        $routePath     = Route::getRoutes()->getByName($routeFullName)->uri();
 
         if (str($routePath)->contains('{parent}')) {
             $parameters['parent'] ??= (request()->route('parent') ?? request()->input('parent'));

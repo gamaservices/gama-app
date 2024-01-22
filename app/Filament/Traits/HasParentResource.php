@@ -27,7 +27,7 @@ trait HasParentResource
     public function getParentResource(): string
     {
         if (! isset(static::$parentResource)) {
-            throw new Exception('Parent resource is not set for '.static::class);
+            throw new Exception('Parent resource is not set for ' . static::class);
         }
 
         return static::$parentResource;
@@ -40,23 +40,23 @@ trait HasParentResource
 
     public function getBreadcrumbs(): array
     {
-        $resource = $this->getResource();
+        $resource       = $this->getResource();
         $parentResource = $this->getParentResource();
 
         $breadcrumbs = [
             $parentResource::getUrl() => $parentResource::getBreadCrumb(),
-            '#parent' => $parentResource::getRecordTitle($this->parent),
+            '#parent'                 => $parentResource::getRecordTitle($this->parent),
         ];
 
         // Breadcrumb to child.index or parent.view
-        $childIndex = $resource::getPluralModelLabel().'.index';
+        $childIndex = $resource::getPluralModelLabel() . '.index';
         $parentView = 'view';
 
         if ($parentResource::hasPage($childIndex)) {
-            $url = $parentResource::getUrl($childIndex, ['parent' => $this->parent]);
+            $url               = $parentResource::getUrl($childIndex, ['parent' => $this->parent]);
             $breadcrumbs[$url] = $resource::getBreadCrumb();
         } elseif ($parentResource::hasPage($parentView)) {
-            $url = $parentResource::getUrl($parentView, ['record' => $this->parent]);
+            $url               = $parentResource::getUrl($parentView, ['record' => $this->parent]);
             $breadcrumbs[$url] = $resource::getBreadCrumb();
         }
 

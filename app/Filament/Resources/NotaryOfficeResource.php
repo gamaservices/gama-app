@@ -84,9 +84,9 @@ class NotaryOfficeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListNotaryOffices::route('/'),
+            'index'  => ListNotaryOffices::route('/'),
             'create' => CreateNotaryOffice::route('/create'),
-            'edit' => EditNotaryOffice::route('/{record}/edit'),
+            'edit'   => EditNotaryOffice::route('/{record}/edit'),
         ];
     }
 }

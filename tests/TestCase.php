@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->state = State::factory()->create();
-        $this->city = City::factory()->for($this->state)->create();
+        $this->city  = City::factory()->for($this->state)->create();
 
         $this->actingAs(User::factory()->create());
     }

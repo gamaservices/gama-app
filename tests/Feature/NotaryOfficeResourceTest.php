@@ -32,17 +32,17 @@ it('can create a notary office', function () {
 
     livewire(CreateNotaryOffice::class)
         ->fillForm([
-            'number' => $newData->number,
+            'number'   => $newData->number,
             'state_id' => $newData->state_id,
-            'city_id' => $newData->city_id,
+            'city_id'  => $newData->city_id,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(NotaryOffice::class, [
-        'number' => $newData->number,
+        'number'   => $newData->number,
         'state_id' => $newData->state_id,
-        'city_id' => $newData->city_id,
+        'city_id'  => $newData->city_id,
     ]);
 });
 
@@ -87,9 +87,9 @@ it('can save a NotaryOffice', function () {
         'record' => $NotaryOffice->getRouteKey(),
     ])
         ->fillForm([
-            'number' => $newData->number,
+            'number'   => $newData->number,
             'state_id' => $newData->state_id,
-            'city_id' => $newData->city_id,
+            'city_id'  => $newData->city_id,
         ])
         ->call('save')
         ->assertHasNoFormErrors();

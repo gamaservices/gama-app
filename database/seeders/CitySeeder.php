@@ -10,9 +10,9 @@ class CitySeeder extends Seeder
 {
     public function run(): void
     {
-        $antioquia_id = State::where('name', 'Antioquia')->first()->id;
+        $antioquia_id    = State::where('name', 'Antioquia')->first()->id;
         $cundinamarca_id = State::where('name', 'Cundinamarca')->first()->id;
-        $cities = [
+        $cities          = [
             ['name' => 'Medellín', 'state_id' => $antioquia_id],
             ['name' => 'Envigado', 'state_id' => $antioquia_id],
             ['name' => 'Itagüí', 'state_id' => $antioquia_id],
