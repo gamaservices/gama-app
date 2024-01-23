@@ -65,6 +65,9 @@
         ],
         "test-pipeline": [
             "./vendor/bin/pest --stop-on-error --stop-on-failure --parallel"
+        ],
+        "analyse": [
+            "./vendor/bin/phpstan"
         ]
     },
     "extra": {

@@ -38,5 +38,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: composer test-pipeline
+    - name: Execute static analyse
+      run: composer analyse
     - name: Execute Linter
       run: composer linter
