@@ -17,16 +17,25 @@ class NotaryOffice extends Model
         'city_id',
     ];
 
+    /**
+     * @return BelongsTo<State, NotaryOffice>
+     */
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
 
+    /**
+     * @return BelongsTo<City, NotaryOffice>
+     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
 
+    /**
+     * @return HasMany<Property>
+     */
     public function properties(): HasMany
     {
         return $this->hasMany(Property::class);

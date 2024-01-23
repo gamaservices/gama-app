@@ -24,6 +24,9 @@ class Insurance extends Model
         'expired_at' => 'date',
     ];
 
+    /**
+     * @return BelongsTo<Property, Insurance>
+     */
     public function property(): BelongsTo
     {
         return $this->belongsTo(Property::class);

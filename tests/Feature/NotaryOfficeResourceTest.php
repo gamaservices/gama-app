@@ -72,7 +72,7 @@ it('can retrieve data', function () {
         ]);
 });
 
-it('can save a NotaryOffice', function () {
+it('can save a notary office', function () {
     $NotaryOffice = NotaryOffice::factory()
         ->for($this->state)
         ->for($this->city)
@@ -113,7 +113,7 @@ it('can validate edit input', function () {
         ->assertHasFormErrors(['number' => 'required']);
 });
 
-it('can delete a NotaryOffice', function () {
+it('can delete a notary office', function () {
     $NotaryOffice = NotaryOffice::factory()->create();
 
     livewire(EditNotaryOffice::class, [

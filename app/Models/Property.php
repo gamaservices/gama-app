@@ -38,26 +38,41 @@ class Property extends Model
         'is_horizontal' => 'boolean',
     ];
 
+    /**
+     * @return BelongsTo<State, Property>
+     */
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
 
+    /**
+     * @return BelongsTo<City, Property>
+     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
 
+    /**
+     * @return BelongsTo<NotaryOffice, Property>
+     */
     public function notaryOffice(): BelongsTo
     {
         return $this->belongsTo(NotaryOffice::class);
     }
 
+    /**
+     * @return HasMany<Insurance>
+     */
     public function Insurances(): HasMany
     {
         return $this->hasMany(Insurance::class);
     }
 
+    /**
+     * @return HasMany<PublicService>
+     */
     public function PublicServices(): HasMany
     {
         return $this->hasMany(PublicService::class);

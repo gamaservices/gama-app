@@ -21,6 +21,9 @@ class PublicService extends Model
         'is_domiciled' => 'boolean',
     ];
 
+    /**
+     * @return BelongsTo<Property, PublicService>
+     */
     public function property(): BelongsTo
     {
         return $this->belongsTo(Property::class);

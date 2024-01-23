@@ -33,7 +33,7 @@ it('can render create page', function () {
         ->assertSuccessful();
 });
 
-it('can create an publicService', function () {
+it('can create a public service', function () {
     $parent  = Property::factory()->create();
     $newData = PublicService::factory()->make([
         'property_id' => $parent->id,

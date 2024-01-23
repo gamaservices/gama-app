@@ -15,11 +15,17 @@ class State extends Model
         'code',
     ];
 
+    /**
+     * @return HasMany<City>
+     */
     public function cities(): HasMany
     {
         return $this->hasMany(City::class);
     }
 
+    /**
+     * @return HasMany<Property>
+     */
     public function properties(): HasMany
     {
         return $this->hasMany(Property::class);
