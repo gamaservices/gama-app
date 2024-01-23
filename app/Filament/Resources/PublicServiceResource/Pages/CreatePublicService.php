@@ -24,7 +24,9 @@ class CreatePublicService extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['property_id'] = $this->parent->id;
+        if (isset($this->parent->id)) {
+            $data['property_id'] = $this->parent->id;
+        }
 
         return $data;
     }
