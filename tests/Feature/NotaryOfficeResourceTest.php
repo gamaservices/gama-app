@@ -14,10 +14,10 @@ it('can render list page', function () {
 });
 
 it('can list notary offices', function () {
-    $properties = NotaryOffice::factory()->count(10)->create();
+    $notaryOffices = NotaryOffice::factory()->count(10)->create();
 
     livewire(ListNotaryOffices::class)
-        ->assertCanSeeTableRecords($properties);
+        ->assertCanSeeTableRecords($notaryOffices);
 });
 
 it('can render create page', function () {
@@ -62,18 +62,18 @@ it('can render edit page', function () {
 });
 
 it('can retrieve data', function () {
-    $NotaryOffice = NotaryOffice::factory()->create();
+    $notaryOffice = NotaryOffice::factory()->create();
 
     livewire(EditNotaryOffice::class, [
-        'record' => $NotaryOffice->getRouteKey(),
+        'record' => $notaryOffice->getRouteKey(),
     ])
         ->assertFormSet([
-            'number' => $NotaryOffice->number,
+            'number' => $notaryOffice->number,
         ]);
 });
 
 it('can save a notary office', function () {
-    $NotaryOffice = NotaryOffice::factory()
+    $notaryOffice = NotaryOffice::factory()
         ->for($this->state)
         ->for($this->city)
         ->create();
@@ -84,7 +84,7 @@ it('can save a notary office', function () {
         ->make();
 
     livewire(EditNotaryOffice::class, [
-        'record' => $NotaryOffice->getRouteKey(),
+        'record' => $notaryOffice->getRouteKey(),
     ])
         ->fillForm([
             'number'   => $newData->number,
@@ -94,17 +94,17 @@ it('can save a notary office', function () {
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($NotaryOffice->refresh())
+    expect($notaryOffice->refresh())
         ->number->toBe($newData->number)
         ->state_id->toBe($newData->state_id)
         ->city_id->toBe($newData->city_id);
 });
 
 it('can validate edit input', function () {
-    $NotaryOffice = NotaryOffice::factory()->create();
+    $notaryOffice = NotaryOffice::factory()->create();
 
     livewire(EditNotaryOffice::class, [
-        'record' => $NotaryOffice->getRouteKey(),
+        'record' => $notaryOffice->getRouteKey(),
     ])
         ->fillForm([
             'number' => null,
@@ -114,12 +114,12 @@ it('can validate edit input', function () {
 });
 
 it('can delete a notary office', function () {
-    $NotaryOffice = NotaryOffice::factory()->create();
+    $notaryOffice = NotaryOffice::factory()->create();
 
     livewire(EditNotaryOffice::class, [
-        'record' => $NotaryOffice->getRouteKey(),
+        'record' => $notaryOffice->getRouteKey(),
     ])
         ->callAction(DeleteAction::class);
 
-    $this->assertModelMissing($NotaryOffice);
+    $this->assertModelMissing($notaryOffice);
 });
