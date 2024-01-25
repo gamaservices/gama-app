@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Illuminate\Support\Facades\Hash;
 
 use function Pest\Livewire\livewire;
 
@@ -29,30 +30,44 @@ it('can create an user', function () {
         ->fillForm([
             'name'                  => $newData->name,
             'email'                 => $newData->email,
-            'password'              => 'password',
-            'password_confirmation' => 'password',
+            'password'              => 'new_password',
+            'password_confirmation' => 'new_password',
+            'roles'                 => $this->role->id,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
+    $user = User::where('name', $newData->name)->first();
+
+    $this->assertTrue(Hash::check('new_password', $user->password));
+
     $this->assertDatabaseHas(User::class, [
         'name'  => $newData->name,
         'email' => $newData->email,
+    ]);
+
+    $this->assertDatabaseHas('model_has_roles', [
+        'role_id'  => $this->role->id,
+        'model_id' => $user->id,
     ]);
 });
 
 it('can validate create input', function () {
     livewire(CreateUser::class)
         ->fillForm([
-            'name'     => null,
-            'email'    => null,
-            'password' => null,
+            'name'                  => null,
+            'email'                 => null,
+            'password'              => null,
+            'password_confirmation' => 'other',
+            'roles'                 => null,
         ])
         ->call('create')
         ->assertHasFormErrors([
-            'name'     => 'required',
-            'email'    => 'required',
-            'password' => 'required',
+            'name'                  => 'required',
+            'email'                 => 'required',
+            'password'              => 'required',
+            'password_confirmation' => 'same:password',
+            'roles'                 => 'required',
         ]);
 });
 
@@ -73,6 +88,7 @@ it('can retrieve data', function () {
             'email'                 => $user->email,
             'password'              => null,
             'password_confirmation' => null,
+            'roles'                 => $user->roles->pluck('id')->toArray(),
         ]);
 });
 
@@ -87,8 +103,9 @@ it('can save an user', function () {
         ->fillForm([
             'name'                  => $newData->name,
             'email'                 => $newData->email,
-            'password'              => 'password',
-            'password_confirmation' => 'password',
+            'password'              => 'new_password',
+            'password_confirmation' => 'new_password',
+            'roles'                 => $this->role->id,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
@@ -96,7 +113,8 @@ it('can save an user', function () {
     expect($user->refresh())
         ->name->toBe($newData->name)
         ->email->toBe($newData->email)
-        ->password->not()->toBeNull();
+        ->password->not()->toBeNull()
+        ->roles->first()->id->toBe($this->role->id);
 });
 
 it('can validate edit input', function () {
@@ -106,15 +124,19 @@ it('can validate edit input', function () {
         'record' => $User->getRouteKey(),
     ])
         ->fillForm([
-            'name'     => null,
-            'email'    => null,
-            'password' => null,
+            'name'                  => null,
+            'email'                 => null,
+            'password'              => null,
+            'password_confirmation' => 'other',
+            'roles'                 => null,
         ])
         ->call('save')
         ->assertHasFormErrors([
-            'name'     => 'required',
-            'email'    => 'required',
-            'password' => 'required',
+            'name'                  => 'required',
+            'email'                 => 'required',
+            'password'              => 'required',
+            'password_confirmation' => 'same:password',
+            'roles'                 => 'required',
         ]);
 });
 
