@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
-use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Role;
 
 class EditRole extends EditRecord
 {
@@ -45,7 +45,7 @@ class EditRole extends EditRecord
             ]));
         });
 
-        if ($this->record instanceof User) {
+        if ($this->record instanceof Role) {
             $this->record->syncPermissions($permissionModels);
         }
     }
