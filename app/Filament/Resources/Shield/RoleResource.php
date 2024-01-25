@@ -9,6 +9,7 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -70,7 +71,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                 Forms\Components\Tabs::make('Permissions')
                     ->contained()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.resources'))
+                        Tab::make(__('filament-shield::filament-shield.resources'))
                             ->visible(fn (): bool => (bool) Utils::isResourceEntityEnabled())
                             ->badge(static::getResourceTabBadgeCount())
                             ->schema([
@@ -276,7 +277,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     {
         return collect(static::getCustomEntities())
             ->flatMap(fn ($customPermission) => [
-                $customPermission => str($customPermission)->headline()->toString(),
+                $customPermission => str((string) $customPermission)->headline()->toString(),
             ])
             ->toArray();
     }
@@ -305,12 +306,12 @@ class RoleResource extends Resource implements HasShieldPermissions
         return static::getCheckboxListFormComponent($entity['resource'], $permissionsArray);
     }
 
-    public static function getTabFormComponentForPage(): Component
+    public static function getTabFormComponentForPage(): Tab
     {
         $options = static::getPageOptions();
         $count   = count($options);
 
-        return Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.pages'))
+        return Tab::make(__('filament-shield::filament-shield.pages'))
             ->visible(fn (): bool => (bool) Utils::isPageEntityEnabled() && $count > 0)
             ->badge($count)
             ->schema([
@@ -318,12 +319,12 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getTabFormComponentForWidget(): Component
+    public static function getTabFormComponentForWidget(): Tab
     {
         $options = static::getWidgetOptions();
         $count   = count($options);
 
-        return Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.widgets'))
+        return Tab::make(__('filament-shield::filament-shield.widgets'))
             ->visible(fn (): bool => (bool) Utils::isWidgetEntityEnabled() && $count > 0)
             ->badge($count)
             ->schema([
@@ -331,12 +332,12 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getTabFormComponentForCustomPermissions(): Component
+    public static function getTabFormComponentForCustomPermissions(): Tab
     {
         $options = static::getCustomPermissionOptions();
         $count   = count($options);
 
-        return Forms\Components\Tabs\Tab::make(__('filament-shield::filament-shield.custom'))
+        return Tab::make(__('filament-shield::filament-shield.custom'))
             ->visible(fn (): bool => (bool) Utils::isCustomPermissionEntityEnabled() && $count > 0)
             ->badge($count)
             ->schema([
