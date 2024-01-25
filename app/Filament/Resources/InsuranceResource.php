@@ -16,6 +16,8 @@ class InsuranceResource extends Resource
 {
     protected static ?string $model = Insurance::class;
 
+    protected static ?string $modelLabel = 'Seguro';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $recordTitleAttribute = 'policy_number';
