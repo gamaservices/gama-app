@@ -72,7 +72,7 @@
             "./vendor/bin/phpstan"
         ],
         "check": [
-            "composer test && composer analyse && composer fixer"
+            "composer test-pipeline && composer analyse && composer fixer"
         ]
     },
     "extra": {
