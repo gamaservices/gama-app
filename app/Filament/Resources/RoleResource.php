@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\Shield;
+namespace App\Filament\Resources;
 
-use App\Filament\Resources\Shield\RoleResource\Pages;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -99,10 +97,10 @@ class RoleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListRoles::route('/'),
-            'create' => Pages\CreateRole::route('/create'),
-            'view'   => Pages\ViewRole::route('/{record}'),
-            'edit'   => Pages\EditRole::route('/{record}/edit'),
+            'index'  => RoleResource\Pages\ListRoles::route('/'),
+            'create' => RoleResource\Pages\CreateRole::route('/create'),
+            'view'   => RoleResource\Pages\ViewRole::route('/{record}'),
+            'edit'   => RoleResource\Pages\EditRole::route('/{record}/edit'),
         ];
     }
 

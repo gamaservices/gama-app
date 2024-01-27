@@ -1,11 +1,10 @@
 <?php
 
-use App\Filament\Resources\Shield\RoleResource;
-use App\Filament\Resources\Shield\RoleResource\Pages\CreateRole;
-use App\Filament\Resources\Shield\RoleResource\Pages\EditRole;
-use App\Filament\Resources\Shield\RoleResource\Pages\ListRoles;
+use App\Filament\Resources\RoleResource;
+use App\Filament\Resources\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\RoleResource\Pages\EditRole;
+use App\Filament\Resources\RoleResource\Pages\ListRoles;
 use Filament\Actions\DeleteAction;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
