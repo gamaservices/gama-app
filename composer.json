@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "ext-pdo": "*",
+        "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -69,6 +70,9 @@
         ],
         "analyse": [
             "./vendor/bin/phpstan"
+        ],
+        "check": [
+            "composer test-pipeline && composer analyse && composer fixer"
         ]
     },
     "extra": {
