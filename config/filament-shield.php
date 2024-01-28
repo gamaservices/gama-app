@@ -36,6 +36,10 @@ return [
             'update',
             'delete',
             'delete_any',
+            'restore',
+            'restore_any',
+            'replicate',
+            'reorder',
         ],
 
         'page'   => 'page',
