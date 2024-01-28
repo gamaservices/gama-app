@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Shield;
 
-use App\Filament\Resources\RoleResource\Pages\CreateRole;
-use App\Filament\Resources\RoleResource\Pages\EditRole;
-use App\Filament\Resources\RoleResource\Pages\ListRoles;
-use App\Filament\Resources\RoleResource\Pages\ViewRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\EditRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\ListRoles;
+use App\Filament\Resources\Shield\RoleResource\Pages\ViewRole;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Support\Utils;
