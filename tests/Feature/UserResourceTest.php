@@ -16,7 +16,7 @@ it('can render list page', function () {
 
 it('can list users', function () {
     livewire(ListUsers::class)
-        ->assertCanSeeTableRecords([$this->user]);
+        ->assertCanSeeTableRecords(User::all());
 });
 
 it('can render create page', function () {
