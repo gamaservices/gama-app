@@ -1,9 +1,9 @@
 <?php
 
-use App\Filament\Resources\RoleResource;
-use App\Filament\Resources\RoleResource\Pages\CreateRole;
-use App\Filament\Resources\RoleResource\Pages\EditRole;
-use App\Filament\Resources\RoleResource\Pages\ListRoles;
+use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\Resources\Shield\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\EditRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\ListRoles;
 use Filament\Actions\DeleteAction;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -61,7 +61,7 @@ it('can create a role', function () {
         ->assertFormFieldExists('guard_name')
         ->assertFormFieldExists('user')
         ->assertFormFieldExists('property')
-        ->assertFormFieldExists('role')
+        ->assertFormFieldExists('insurance')
         ->fillForm([
             'name'       => 'testing_role',
             'guard_name' => 'web',
@@ -143,7 +143,7 @@ it('can retrieve data', function () {
         ->assertFormFieldExists('guard_name')
         ->assertFormFieldExists('user')
         ->assertFormFieldExists('property')
-        ->assertFormFieldExists('role')
+        ->assertFormFieldExists('insurance')
         ->assertFormSet([
             'name'       => $role->name,
             'guard_name' => $role->guard_name,
@@ -208,4 +208,21 @@ it('can delete a role', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($role);
+});
+
+it('can render view page', function () {
+    $this->get(RoleResource::getUrl('view', [
+        'record' => Role::create(['name' => 'testing-role']),
+    ]))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render view page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(RoleResource::getUrl('view', [
+            'record' => Role::create(['name' => 'testing-role']),
+        ]))->assertForbidden();
+
+    $this->assertAuthenticated();
 });
