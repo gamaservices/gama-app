@@ -12,21 +12,55 @@ use function Pest\Livewire\livewire;
 
 it('can render list page', function () {
     $this->get(UserResource::getUrl())->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render list page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(UserResource::getUrl())
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can list users', function () {
     livewire(ListUsers::class)
-        ->assertCanSeeTableRecords([$this->user]);
+        ->assertCanSeeTableRecords(User::all())
+        ->assertCountTableRecords(2)
+        ->assertCanRenderTableColumn('name')
+        ->assertCanRenderTableColumn('email')
+        ->assertCanRenderTableColumn('roles.name')
+        ->assertCanNotRenderTableColumn('created_at')
+        ->assertCanNotRenderTableColumn('updated_at');
+
+    $this->assertAuthenticated();
 });
 
 it('can render create page', function () {
     $this->get(UserResource::getUrl('create'))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render create page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(UserResource::getUrl('create'))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can create an user', function () {
     $newData = User::factory()->make();
 
     livewire(CreateUser::class)
+        ->assertFormExists()
+        ->assertFormFieldExists('name')
+        ->assertFormFieldExists('email')
+        ->assertFormFieldExists('password')
+        ->assertFormFieldExists('password_confirmation')
+        ->assertFormFieldExists('roles')
         ->fillForm([
             'name'                  => $newData->name,
             'email'                 => $newData->email,
@@ -50,6 +84,8 @@ it('can create an user', function () {
         'role_id'  => $this->role->id,
         'model_id' => $user->id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
@@ -68,13 +104,38 @@ it('can validate create input', function () {
             'password'              => 'required',
             'password_confirmation' => 'same:password',
             'roles'                 => 'required',
+        ])
+        ->fillForm([
+            'name'     => str_repeat('a', 256),
+            'email'    => str_repeat('a', 256),
+            'password' => str_repeat('a', 256),
+        ])
+        ->call('create')
+        ->assertHasFormErrors([
+            'name'     => 'max:255',
+            'email'    => 'max:255',
+            'password' => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
     $this->get(UserResource::getUrl('edit', [
         'record' => User::factory()->create(),
     ]))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render edit page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(UserResource::getUrl('edit', [
+            'record' => User::factory()->create(),
+        ]))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can retrieve data', function () {
@@ -90,6 +151,8 @@ it('can retrieve data', function () {
             'password_confirmation' => null,
             'roles'                 => $user->roles->pluck('id')->toArray(),
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save an user', function () {
@@ -100,6 +163,12 @@ it('can save an user', function () {
     livewire(EditUser::class, [
         'record' => $user->getRouteKey(),
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('name')
+        ->assertFormFieldExists('email')
+        ->assertFormFieldExists('password')
+        ->assertFormFieldExists('password_confirmation')
+        ->assertFormFieldExists('roles')
         ->fillForm([
             'name'                  => $newData->name,
             'email'                 => $newData->email,
@@ -115,6 +184,8 @@ it('can save an user', function () {
         ->email->toBe($newData->email)
         ->password->not()->toBeNull()
         ->roles->first()->id->toBe($this->role->id);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate edit input', function () {
@@ -137,7 +208,19 @@ it('can validate edit input', function () {
             'password'              => 'required',
             'password_confirmation' => 'same:password',
             'roles'                 => 'required',
+        ])->fillForm([
+            'name'     => str_repeat('a', 256),
+            'email'    => str_repeat('a', 256),
+            'password' => str_repeat('a', 256),
+        ])
+        ->call('save')
+        ->assertHasFormErrors([
+            'name'     => 'max:255',
+            'email'    => 'max:255',
+            'password' => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete an user', function () {
@@ -149,4 +232,6 @@ it('can delete an user', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($User);
+
+    $this->assertAuthenticated();
 });

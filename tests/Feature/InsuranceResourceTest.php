@@ -14,6 +14,16 @@ it('can render list page', function () {
     $parent = Property::factory()->create();
     $this->get(PropertyResource::getUrl('insurances.index', ['parent' => $parent->id]))
         ->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render list page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl())
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can list insurances', function () {
@@ -24,13 +34,35 @@ it('can list insurances', function () {
     livewire(ListInsurances::class, [
         'parent' => $parent,
     ])
-        ->assertCanSeeTableRecords($parent->insurances);
+        ->assertCanSeeTableRecords($parent->insurances)
+        ->assertCountTableRecords(10)
+        ->assertCanRenderTableColumn('property.id')
+        ->assertCanRenderTableColumn('policy_number')
+        ->assertCanRenderTableColumn('type')
+        ->assertCanRenderTableColumn('company')
+        ->assertCanRenderTableColumn('start_at')
+        ->assertCanRenderTableColumn('expired_at')
+        ->assertCanNotRenderTableColumn('created_at')
+        ->assertCanNotRenderTableColumn('updated_at');
+
+    $this->assertAuthenticated();
 });
 
 it('can render create page', function () {
     $parent = Property::factory()->create();
     $this->get(PropertyResource::getUrl('insurances.create', ['parent' => $parent->id]))
         ->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render create page when user do not have permission', function () {
+    $parent = Property::factory()->create();
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl('insurances.create', ['parent' => $parent->id]))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can create an insurance', function () {
@@ -42,6 +74,12 @@ it('can create an insurance', function () {
     livewire(CreateInsurance::class, [
         'parent' => $parent,
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('policy_number')
+        ->assertFormFieldExists('type')
+        ->assertFormFieldExists('company')
+        ->assertFormFieldExists('start_at')
+        ->assertFormFieldExists('expired_at')
         ->fillForm([
             'policy_number' => $newData->policy_number,
             'type'          => $newData->type,
@@ -58,8 +96,10 @@ it('can create an insurance', function () {
         'company'       => $newData->company,
         'start_at'      => $newData->start_at,
         'expired_at'    => $newData->expired_at,
-        'property_id'   => $newData->property_id,
+        'property_id'   => $parent->id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
@@ -70,9 +110,32 @@ it('can validate create input', function () {
     ])
         ->fillForm([
             'policy_number' => null,
+            'type'          => null,
+            'company'       => null,
+            'start_at'      => null,
+            'expired_at'    => null,
         ])
         ->call('create')
-        ->assertHasFormErrors(['policy_number' => 'required']);
+        ->assertHasFormErrors([
+            'policy_number' => 'required',
+            'type'          => 'required',
+            'company'       => 'required',
+            'start_at'      => 'required',
+            'expired_at'    => 'required',
+        ])
+        ->fillForm([
+            'policy_number' => str_repeat('a', 256),
+            'type'          => str_repeat('a', 256),
+            'company'       => str_repeat('a', 256),
+        ])
+        ->call('create')
+        ->assertHasFormErrors([
+            'policy_number' => 'max:255',
+            'type'          => 'max:255',
+            'company'       => 'max:255',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
@@ -84,6 +147,22 @@ it('can render edit page', function () {
         'parent' => $parent,
         'record' => $parent->insurances->first(),
     ]))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render edit page when user do not have permission', function () {
+    $parent = Property::factory()
+        ->has(Insurance::factory())
+        ->create();
+
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl('insurances.edit', [
+            'parent' => $parent,
+            'record' => $parent->insurances->first(),
+        ]))->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can retrieve data', function () {
@@ -104,6 +183,8 @@ it('can retrieve data', function () {
             'expired_at'    => $insurance->expired_at->format('Y-m-d'),
             'property_id'   => $insurance->property_id,
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save an insurance', function () {
@@ -120,6 +201,12 @@ it('can save an insurance', function () {
         'parent' => $parent,
         'record' => $parent->insurances->first()->getRouteKey(),
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('policy_number')
+        ->assertFormFieldExists('type')
+        ->assertFormFieldExists('company')
+        ->assertFormFieldExists('start_at')
+        ->assertFormFieldExists('expired_at')
         ->fillForm([
             'policy_number' => $newData->policy_number,
             'type'          => $newData->type,
@@ -137,6 +224,8 @@ it('can save an insurance', function () {
         ->start_at->format('Y-m-d')->toBe($newData->start_at->format('Y-m-d'))
         ->expired_at->format('Y-m-d')->toBe($newData->expired_at->format('Y-m-d'))
         ->property_id->toBe($newData->property_id);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate edit input', function () {
@@ -150,9 +239,32 @@ it('can validate edit input', function () {
     ])
         ->fillForm([
             'policy_number' => null,
+            'type'          => null,
+            'company'       => null,
+            'start_at'      => null,
+            'expired_at'    => null,
         ])
         ->call('save')
-        ->assertHasFormErrors(['policy_number' => 'required']);
+        ->assertHasFormErrors([
+            'policy_number' => 'required',
+            'type'          => 'required',
+            'company'       => 'required',
+            'start_at'      => 'required',
+            'expired_at'    => 'required',
+        ])
+        ->fillForm([
+            'policy_number' => str_repeat('a', 256),
+            'type'          => str_repeat('a', 256),
+            'company'       => str_repeat('a', 256),
+        ])
+        ->call('save')
+        ->assertHasFormErrors([
+            'policy_number' => 'max:255',
+            'type'          => 'max:255',
+            'company'       => 'max:255',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete an insurance', function () {
@@ -169,4 +281,6 @@ it('can delete an insurance', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($insurance);
+
+    $this->assertAuthenticated();
 });

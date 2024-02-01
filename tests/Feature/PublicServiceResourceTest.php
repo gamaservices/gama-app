@@ -14,6 +14,17 @@ it('can render list page', function () {
     $parent = Property::factory()->create();
     $this->get(PropertyResource::getUrl('public_services.index', ['parent' => $parent->id]))
         ->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render list page when user do not have permission', function () {
+    $parent = Property::factory()->create();
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl('public_services.index', ['parent' => $parent->id]))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can list public services', function () {
@@ -24,13 +35,33 @@ it('can list public services', function () {
     livewire(ListPublicServices::class, [
         'parent' => $parent,
     ])
-        ->assertCanSeeTableRecords($parent->publicServices);
+        ->assertCanSeeTableRecords($parent->publicServices)
+        ->assertCountTableRecords(10)
+        ->assertCanRenderTableColumn('type')
+        ->assertCanRenderTableColumn('company')
+        ->assertCanRenderTableColumn('is_domiciled')
+        ->assertCanRenderTableColumn('property.id')
+        ->assertCanNotRenderTableColumn('created_at')
+        ->assertCanNotRenderTableColumn('updated_at');
+
+    $this->assertAuthenticated();
 });
 
 it('can render create page', function () {
     $parent = Property::factory()->create();
     $this->get(PropertyResource::getUrl('public_services.create', ['parent' => $parent->id]))
         ->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render create page when user do not have permission', function () {
+    $parent = Property::factory()->create();
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl('public_services.create', ['parent' => $parent->id]))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can create a public service', function () {
@@ -42,6 +73,10 @@ it('can create a public service', function () {
     livewire(CreatePublicService::class, [
         'parent' => $parent,
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('type')
+        ->assertFormFieldExists('company')
+        ->assertFormFieldExists('is_domiciled')
         ->fillForm([
             'type'         => $newData->type,
             'company'      => $newData->company,
@@ -56,6 +91,8 @@ it('can create a public service', function () {
         'is_domiciled' => $newData->is_domiciled,
         'property_id'  => $newData->property_id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
@@ -65,10 +102,27 @@ it('can validate create input', function () {
         'parent' => $parent,
     ])
         ->fillForm([
-            'type' => null,
+            'type'         => null,
+            'company'      => null,
+            'is_domiciled' => null,
         ])
         ->call('create')
-        ->assertHasFormErrors(['type' => 'required']);
+        ->assertHasFormErrors([
+            'type'         => 'required',
+            'company'      => 'required',
+            'is_domiciled' => 'required',
+        ])
+        ->fillForm([
+            'type'    => str_repeat('a', 256),
+            'company' => str_repeat('a', 256),
+        ])
+        ->call('create')
+        ->assertHasFormErrors([
+            'type'    => 'max:255',
+            'company' => 'max:255',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
@@ -80,6 +134,22 @@ it('can render edit page', function () {
         'parent' => $parent,
         'record' => $parent->publicServices->first(),
     ]))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render edit page when user do not have permission', function () {
+    $parent = Property::factory()
+        ->has(PublicService::factory())
+        ->create();
+
+    $this->actingAs($this->user)
+        ->get(PropertyResource::getUrl('public_services.edit', [
+            'parent' => $parent,
+            'record' => $parent->publicServices->first(),
+        ]))->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can retrieve data', function () {
@@ -98,6 +168,8 @@ it('can retrieve data', function () {
             'is_domiciled' => $publicService->is_domiciled,
             'property_id'  => $publicService->property_id,
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save a public service', function () {
@@ -114,6 +186,10 @@ it('can save a public service', function () {
         'parent' => $parent,
         'record' => $parent->publicServices->first()->getRouteKey(),
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('type')
+        ->assertFormFieldExists('company')
+        ->assertFormFieldExists('is_domiciled')
         ->fillForm([
             'type'         => $newData->type,
             'company'      => $newData->company,
@@ -139,10 +215,27 @@ it('can validate edit input', function () {
         'record' => $parent->publicServices->first()->getRouteKey(),
     ])
         ->fillForm([
-            'type' => null,
+            'type'         => null,
+            'company'      => null,
+            'is_domiciled' => null,
         ])
         ->call('save')
-        ->assertHasFormErrors(['type' => 'required']);
+        ->assertHasFormErrors([
+            'type'         => 'required',
+            'company'      => 'required',
+            'is_domiciled' => 'required',
+        ])
+        ->fillForm([
+            'type'    => str_repeat('a', 256),
+            'company' => str_repeat('a', 256),
+        ])
+        ->call('save')
+        ->assertHasFormErrors([
+            'type'    => 'max:255',
+            'company' => 'max:255',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete a public service', function () {
@@ -159,4 +252,6 @@ it('can delete a public service', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($publicService);
+
+    $this->assertAuthenticated();
 });

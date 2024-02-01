@@ -1,24 +1,36 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Shield;
 
+use App\Filament\Resources\Shield\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\EditRole;
+use App\Filament\Resources\Shield\RoleResource\Pages\ListRoles;
+use App\Filament\Resources\Shield\RoleResource\Pages\ViewRole;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
+    protected static ?string $model = Role::class;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?Collection $permissionsCollection = null;
@@ -29,7 +41,7 @@ class RoleResource extends Resource
             ->schema([
                 Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->label(__('filament-shield::filament-shield.field.name'))
@@ -67,40 +79,36 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->badge()
+                TextColumn::make('name')
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn ($state): string => Str::headline($state))
-                    ->colors(['primary'])
                     ->searchable(),
-                Tables\Columns\TextColumn::make('guard_name')
-                    ->badge()
+                TextColumn::make('guard_name')
                     ->label(__('filament-shield::filament-shield.column.guard_name')),
-                Tables\Columns\TextColumn::make('permissions_count')
-                    ->badge()
+                TextColumn::make('permissions_count')
                     ->label(__('filament-shield::filament-shield.column.permissions'))
                     ->counts('permissions')
                     ->colors(['success']),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
                     ->dateTime(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => RoleResource\Pages\ListRoles::route('/'),
-            'create' => RoleResource\Pages\CreateRole::route('/create'),
-            'view'   => RoleResource\Pages\ViewRole::route('/{record}'),
-            'edit'   => RoleResource\Pages\EditRole::route('/{record}/edit'),
+            'index'  => ListRoles::route('/'),
+            'create' => CreateRole::route('/create'),
+            'view'   => ViewRole::route('/{record}'),
+            'edit'   => EditRole::route('/{record}/edit'),
         ];
     }
 
@@ -175,7 +183,7 @@ class RoleResource extends Resource
         return collect(FilamentShield::getResources())
             ->sortKeys()
             ->map(function ($entity) {
-                return Forms\Components\Section::make(FilamentShield::getLocalizedResourceLabel($entity['fqcn']))
+                return Section::make(FilamentShield::getLocalizedResourceLabel($entity['fqcn']))
                     ->description(fn () => new HtmlString('<span style="word-break: break-word;">' . Utils::showModelPath($entity['fqcn']) . '</span>'))
                     ->compact()
                     ->schema([
@@ -313,7 +321,7 @@ class RoleResource extends Resource
 
     public static function getCheckboxListFormComponent(string $name, array $options): Component
     {
-        return Forms\Components\CheckboxList::make($name)
+        return CheckboxList::make($name)
             ->label('')
             ->options(fn (): array => $options)
             ->searchable()
