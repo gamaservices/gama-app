@@ -11,17 +11,48 @@ use function Pest\Livewire\livewire;
 
 it('can render list page', function () {
     $this->get(NotaryOfficeResource::getUrl())->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render list page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(NotaryOfficeResource::getUrl())
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can list notary offices', function () {
     $notaryOffices = NotaryOffice::factory()->count(10)->create();
 
     livewire(ListNotaryOffices::class)
-        ->assertCanSeeTableRecords($notaryOffices);
+        ->assertCanSeeTableRecords($notaryOffices)
+        ->assertCountTableRecords(10)
+        ->assertCanRenderTableColumn('number')
+        ->assertCanRenderTableColumn('state.name')
+        ->assertCanRenderTableColumn('city.name')
+        ->assertCanNotRenderTableColumn('created_at')
+        ->assertCanNotRenderTableColumn('updated_at')
+        ->searchTable($notaryOffices->first()->number)
+        ->assertCanSeeTableRecords($notaryOffices->where('number', $notaryOffices->first()->number))
+        ->assertCountTableRecords($notaryOffices->where('number', $notaryOffices->first()->number)->count());
+
+    $this->assertAuthenticated();
 });
 
 it('can render create page', function () {
     $this->get(NotaryOfficeResource::getUrl('create'))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render create page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(NotaryOfficeResource::getUrl('create'))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can create a notary office', function () {
@@ -31,6 +62,10 @@ it('can create a notary office', function () {
         ->make();
 
     livewire(CreateNotaryOffice::class)
+        ->assertFormExists()
+        ->assertFormFieldExists('number')
+        ->assertFormFieldExists('state_id')
+        ->assertFormFieldExists('city_id')
         ->fillForm([
             'number'   => $newData->number,
             'state_id' => $newData->state_id,
@@ -44,21 +79,50 @@ it('can create a notary office', function () {
         'state_id' => $newData->state_id,
         'city_id'  => $newData->city_id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
     livewire(CreateNotaryOffice::class)
         ->fillForm([
-            'number' => null,
+            'number'   => null,
+            'state_id' => null,
+            'city_id'  => null,
         ])
         ->call('create')
-        ->assertHasFormErrors(['number' => 'required']);
+        ->assertHasFormErrors([
+            'number'   => 'required',
+            'state_id' => 'required',
+            'city_id'  => 'required',
+        ])
+        ->fillForm([
+            'number' => 0,
+        ])
+        ->call('create')
+        ->assertHasFormErrors([
+            'number' => 'min:1',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
     $this->get(NotaryOfficeResource::getUrl('edit', [
         'record' => NotaryOffice::factory()->create(),
     ]))->assertSuccessful();
+
+    $this->assertAuthenticated();
+});
+
+it('cannot render edit page when user do not have permission', function () {
+    $this->actingAs($this->user)
+        ->get(NotaryOfficeResource::getUrl('edit', [
+            'record' => NotaryOffice::factory()->create(),
+        ]))
+        ->assertForbidden();
+
+    $this->assertAuthenticated();
 });
 
 it('can retrieve data', function () {
@@ -68,8 +132,12 @@ it('can retrieve data', function () {
         'record' => $notaryOffice->getRouteKey(),
     ])
         ->assertFormSet([
-            'number' => $notaryOffice->number,
+            'number'   => $notaryOffice->number,
+            'state_id' => $notaryOffice->state_id,
+            'city_id'  => $notaryOffice->city_id,
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save a notary office', function () {
@@ -86,6 +154,10 @@ it('can save a notary office', function () {
     livewire(EditNotaryOffice::class, [
         'record' => $notaryOffice->getRouteKey(),
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('number')
+        ->assertFormFieldExists('state_id')
+        ->assertFormFieldExists('city_id')
         ->fillForm([
             'number'   => $newData->number,
             'state_id' => $newData->state_id,
@@ -107,10 +179,25 @@ it('can validate edit input', function () {
         'record' => $notaryOffice->getRouteKey(),
     ])
         ->fillForm([
-            'number' => null,
+            'number'   => null,
+            'state_id' => null,
+            'city_id'  => null,
         ])
         ->call('save')
-        ->assertHasFormErrors(['number' => 'required']);
+        ->assertHasFormErrors([
+            'number'   => 'required',
+            'state_id' => 'required',
+            'city_id'  => 'required',
+        ])
+        ->fillForm([
+            'number' => 0,
+        ])
+        ->call('save')
+        ->assertHasFormErrors([
+            'number' => 'min:1',
+        ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete a notary office', function () {
@@ -122,4 +209,6 @@ it('can delete a notary office', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($notaryOffice);
+
+    $this->assertAuthenticated();
 });
