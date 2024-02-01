@@ -104,7 +104,7 @@ class PropertyResource extends Resource
                     ->minValue(0.1)
                     ->maxValue(100)
                     ->label('% de derechos'),
-                DatePicker::make('disable_at')
+                DatePicker::make('disabled_at')
                     ->label('Fecha de deshabilitación'),
                 DatePicker::make('acquired_at')
                     ->label('Fecha de apertura'),
@@ -165,7 +165,7 @@ class PropertyResource extends Resource
                 IconColumn::make('ownership_percentage')
                     ->boolean()
                     ->label('% de derechos'),
-                TextColumn::make('disable_at')
+                TextColumn::make('disabled_at')
                     ->dateTime()
                     ->sortable()
                     ->label('Fecha de deshabilitación'),
