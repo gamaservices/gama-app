@@ -40,7 +40,6 @@ class NotaryOfficeResource extends Resource
                     ->numeric()
                     ->required()
                     ->minValue(1)
-                    ->maxValue(20)
                     ->label('Número de notaría'),
             ]);
     }
