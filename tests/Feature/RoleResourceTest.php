@@ -82,6 +82,8 @@ it('can create a role', function () {
         'permission_id' => $permission->id,
         'role_id'       => $role->id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
@@ -111,6 +113,8 @@ it('can validate create input', function () {
             'name'       => 'max:255',
             'guard_name' => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
@@ -144,6 +148,8 @@ it('can retrieve data', function () {
             'guard_name' => $role->guard_name,
             'property'   => ['view_any_property'],
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save a role', function () {
@@ -174,6 +180,8 @@ it('can save a role', function () {
         'permission_id' => Permission::findByName('view_any_property')->id,
         'role_id'       => $role->id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate edit input', function () {
@@ -198,6 +206,8 @@ it('can validate edit input', function () {
             'name'       => 'max:255',
             'guard_name' => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete a role', function () {
@@ -209,6 +219,8 @@ it('can delete a role', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($role);
+
+    $this->assertAuthenticated();
 });
 
 it('can render view page', function () {

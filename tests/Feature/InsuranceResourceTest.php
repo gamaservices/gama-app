@@ -98,6 +98,8 @@ it('can create an insurance', function () {
         'expired_at'    => $newData->expired_at,
         'property_id'   => $parent->id,
     ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate create input', function () {
@@ -132,6 +134,8 @@ it('can validate create input', function () {
             'type'          => 'max:255',
             'company'       => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can render edit page', function () {
@@ -179,6 +183,8 @@ it('can retrieve data', function () {
             'expired_at'    => $insurance->expired_at->format('Y-m-d'),
             'property_id'   => $insurance->property_id,
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can save an insurance', function () {
@@ -218,6 +224,8 @@ it('can save an insurance', function () {
         ->start_at->format('Y-m-d')->toBe($newData->start_at->format('Y-m-d'))
         ->expired_at->format('Y-m-d')->toBe($newData->expired_at->format('Y-m-d'))
         ->property_id->toBe($newData->property_id);
+
+    $this->assertAuthenticated();
 });
 
 it('can validate edit input', function () {
@@ -255,6 +263,8 @@ it('can validate edit input', function () {
             'type'          => 'max:255',
             'company'       => 'max:255',
         ]);
+
+    $this->assertAuthenticated();
 });
 
 it('can delete an insurance', function () {
@@ -271,4 +281,6 @@ it('can delete an insurance', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($insurance);
+
+    $this->assertAuthenticated();
 });
