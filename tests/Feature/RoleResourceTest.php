@@ -138,12 +138,7 @@ it('can retrieve data', function () {
     livewire(EditRole::class, [
         'record' => $role->getRouteKey(),
     ])
-        ->assertFormExists()
-        ->assertFormFieldExists('name')
-        ->assertFormFieldExists('guard_name')
-        ->assertFormFieldExists('user')
-        ->assertFormFieldExists('property')
-        ->assertFormFieldExists('insurance')
+
         ->assertFormSet([
             'name'       => $role->name,
             'guard_name' => $role->guard_name,
@@ -157,6 +152,12 @@ it('can save a role', function () {
     livewire(EditRole::class, [
         'record' => $role->getRouteKey(),
     ])
+        ->assertFormExists()
+        ->assertFormFieldExists('name')
+        ->assertFormFieldExists('guard_name')
+        ->assertFormFieldExists('user')
+        ->assertFormFieldExists('property')
+        ->assertFormFieldExists('insurance')
         ->fillForm([
             'name'       => 'another_testing_role',
             'guard_name' => 'web',
