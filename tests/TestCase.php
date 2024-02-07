@@ -20,8 +20,6 @@ abstract class TestCase extends BaseTestCase
 
     protected User $user;
 
-    protected Role $role;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,8 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->user  = User::factory()->create();
 
         $this->superAdmin = User::factory()->create();
-        $this->role       = Role::create(['name' => 'super_admin']);
-        $this->superAdmin->assignRole($this->role);
+        $this->superAdmin->assignRole(Role::create(['name' => 'super_admin']));
 
         $this->actingAs($this->superAdmin);
     }

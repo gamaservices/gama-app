@@ -7,6 +7,8 @@ use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
 
 use function Pest\Livewire\livewire;
 
@@ -53,6 +55,7 @@ it('cannot render create page when user do not have permission', function () {
 
 it('can create an user', function () {
     $newData = User::factory()->make();
+    $role    = Role::create(['name' => 'testing_role']);
 
     livewire(CreateUser::class)
         ->assertFormExists()
@@ -66,7 +69,7 @@ it('can create an user', function () {
             'email'                 => $newData->email,
             'password'              => 'new_password',
             'password_confirmation' => 'new_password',
-            'roles'                 => $this->role->id,
+            'roles'                 => $role->id,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
@@ -81,9 +84,24 @@ it('can create an user', function () {
     ]);
 
     $this->assertDatabaseHas('model_has_roles', [
-        'role_id'  => $this->role->id,
+        'role_id'  => $role->id,
         'model_id' => $user->id,
     ]);
+
+    expect(Activity::all()->last())
+        ->description->toBe('created')
+        ->subject_type->toBe(User::class)
+        ->subject_id->toBe($user->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old'        => [],
+            'attributes' => [
+                'name'       => $newData->name,
+                'email'      => $newData->email,
+                'roles.name' => [$role->name],
+            ],
+        ]));
 
     $this->assertAuthenticated();
 });
@@ -156,8 +174,10 @@ it('can retrieve data', function () {
 });
 
 it('can save an user', function () {
-    $user = User::factory()->create();
-
+    $role    = Role::create(['name' => 'testing_role']);
+    $newRole = Role::create(['name' => 'new_role']);
+    $user    = User::factory()->create();
+    $user->syncRoles($role);
     $newData = User::factory()->make();
 
     livewire(EditUser::class, [
@@ -174,25 +194,44 @@ it('can save an user', function () {
             'email'                 => $newData->email,
             'password'              => 'new_password',
             'password_confirmation' => 'new_password',
-            'roles'                 => $this->role->id,
+            'roles'                 => $newRole->id,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($user->refresh())
+    expect(Activity::all()->last())
+        ->description->toBe('updated')
+        ->subject_type->toBe(User::class)
+        ->subject_id->toBe($user->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old' => [
+                'name'       => $user->name,
+                'email'      => $user->email,
+                'roles.name' => [$role->name],
+
+            ],
+            'attributes' => [
+                'name'       => $newData->name,
+                'email'      => $newData->email,
+                'roles.name' => [$newRole->name],
+            ],
+        ]))
+        ->and($user->refresh())
         ->name->toBe($newData->name)
         ->email->toBe($newData->email)
         ->password->not()->toBeNull()
-        ->roles->first()->id->toBe($this->role->id);
+        ->roles->first()->id->toBe($newRole->id);
 
     $this->assertAuthenticated();
 });
 
 it('can validate edit input', function () {
-    $User = User::factory()->create();
+    $user = User::factory()->create();
 
     livewire(EditUser::class, [
-        'record' => $User->getRouteKey(),
+        'record' => $user->getRouteKey(),
     ])
         ->fillForm([
             'name'                  => null,
@@ -224,14 +263,21 @@ it('can validate edit input', function () {
 });
 
 it('can delete an user', function () {
-    $User = User::factory()->create();
+    $user = User::factory()->create();
 
     livewire(EditUser::class, [
-        'record' => $User->getRouteKey(),
+        'record' => $user->getRouteKey(),
     ])
         ->callAction(DeleteAction::class);
 
-    $this->assertModelMissing($User);
+    $this->assertModelMissing($user);
+
+    expect(Activity::all()->last())
+        ->description->toBe('deleted')
+        ->subject_type->toBe(User::class)
+        ->subject_id->toBe($user->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id);
 
     $this->assertAuthenticated();
 });
