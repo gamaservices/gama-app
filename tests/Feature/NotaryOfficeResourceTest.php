@@ -5,7 +5,9 @@ use App\Filament\Resources\NotaryOfficeResource\Pages\CreateNotaryOffice;
 use App\Filament\Resources\NotaryOfficeResource\Pages\EditNotaryOffice;
 use App\Filament\Resources\NotaryOfficeResource\Pages\ListNotaryOffices;
 use App\Models\NotaryOffice;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Spatie\Activitylog\Models\Activity;
 
 use function Pest\Livewire\livewire;
 
@@ -79,6 +81,20 @@ it('can create a notary office', function () {
         'state_id' => $newData->state_id,
         'city_id'  => $newData->city_id,
     ]);
+
+    expect(Activity::all()->last())
+        ->description->toBe('created')
+        ->subject_type->toBe(NotaryOffice::class)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old'        => [],
+            'attributes' => [
+                'number'     => $newData->number,
+                'state.name' => $newData->state->name,
+                'city.name'  => $newData->city->name,
+            ],
+        ]));
 
     $this->assertAuthenticated();
 });
@@ -166,7 +182,25 @@ it('can save a notary office', function () {
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($notaryOffice->refresh())
+    expect(Activity::all()->last())
+        ->description->toBe('updated')
+        ->subject_type->toBe(NotaryOffice::class)
+        ->subject_id->toBe($notaryOffice->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes([
+            'old' => [
+                'number'   => $notaryOffice->number,
+                'state.id' => $notaryOffice->state_id,
+                'city.id'  => $notaryOffice->city_id,
+            ],
+            'attributes' => [
+                'number'   => $newData->number,
+                'state.id' => $newData->state_id,
+                'city.id'  => $newData->city_id,
+            ],
+        ])
+        ->and($notaryOffice->refresh())
         ->number->toBe($newData->number)
         ->state_id->toBe($newData->state_id)
         ->city_id->toBe($newData->city_id);
@@ -209,6 +243,13 @@ it('can delete a notary office', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($notaryOffice);
+
+    expect(Activity::all()->last())
+        ->description->toBe('deleted')
+        ->subject_type->toBe(NotaryOffice::class)
+        ->subject_id->toBe($notaryOffice->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id);
 
     $this->assertAuthenticated();
 });
