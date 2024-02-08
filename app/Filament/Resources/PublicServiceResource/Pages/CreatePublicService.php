@@ -6,10 +6,12 @@ use App\Filament\Resources\PropertyResource;
 use App\Filament\Resources\PublicServiceResource;
 use App\Filament\Traits\HasParentResource;
 use Filament\Resources\Pages\CreateRecord;
+use Noxo\FilamentActivityLog\Extensions\LogCreateRecord;
 
 class CreatePublicService extends CreateRecord
 {
     use HasParentResource;
+    use LogCreateRecord;
 
     protected static string $parentResource = PropertyResource::class;
 
