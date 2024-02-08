@@ -4,7 +4,9 @@ use App\Filament\Resources\Shield\RoleResource;
 use App\Filament\Resources\Shield\RoleResource\Pages\CreateRole;
 use App\Filament\Resources\Shield\RoleResource\Pages\EditRole;
 use App\Filament\Resources\Shield\RoleResource\Pages\ListRoles;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -83,6 +85,24 @@ it('can create a role', function () {
         'role_id'       => $role->id,
     ]);
 
+    expect(Activity::all()->last())
+        ->description->toBe('created')
+        ->subject_type->toBe(Role::class)
+        ->subject_id->toBe($role->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old'        => [],
+            'attributes' => [
+                'name'             => $role->name,
+                'guard_name'       => $role->guard_name,
+                'permissions.name' => [
+                    $permission->name,
+                ],
+
+            ],
+        ]));
+
     $this->assertAuthenticated();
 });
 
@@ -153,7 +173,10 @@ it('can retrieve data', function () {
 });
 
 it('can save a role', function () {
-    $role = Role::create(['name' => 'testing_role']);
+    $role = Role::create([
+        'name'       => 'testing_role',
+        'guard_name' => 'api',
+    ]);
 
     livewire(EditRole::class, [
         'record' => $role->getRouteKey(),
@@ -172,7 +195,27 @@ it('can save a role', function () {
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($role->refresh())
+    expect(Activity::all()->last())
+        ->description->toBe('updated')
+        ->subject_type->toBe(Role::class)
+        ->subject_id->toBe($role->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old' => [
+                'name'             => $role->name,
+                'guard_name'       => $role->guard_name,
+                'permissions.name' => [],
+            ],
+            'attributes' => [
+                'name'             => 'another_testing_role',
+                'guard_name'       => 'web',
+                'permissions.name' => [
+                    'view_any_property',
+                ],
+            ],
+        ]))
+        ->and($role->refresh())
         ->name->toBe('another_testing_role')
         ->guard_name->toBe('web');
 
@@ -219,6 +262,13 @@ it('can delete a role', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($role);
+
+    expect(Activity::all()->last())
+        ->description->toBe('deleted')
+        ->subject_type->toBe(Role::class)
+        ->subject_id->toBe($role->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id);
 
     $this->assertAuthenticated();
 });

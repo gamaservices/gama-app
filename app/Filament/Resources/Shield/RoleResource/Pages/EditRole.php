@@ -8,10 +8,13 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Noxo\FilamentActivityLog\Extensions\LogEditRecord;
 use Spatie\Permission\Models\Role;
 
 class EditRole extends EditRecord
 {
+    use LogEditRecord;
+
     protected static string $resource = RoleResource::class;
 
     public Collection $permissions;
@@ -48,5 +51,7 @@ class EditRole extends EditRecord
         if ($this->record instanceof Role) {
             $this->record->syncPermissions($permissionModels);
         }
+
+        $this->logRecordAfter($this->record);
     }
 }
