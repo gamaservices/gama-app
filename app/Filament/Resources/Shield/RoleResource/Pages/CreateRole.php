@@ -7,10 +7,13 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Noxo\FilamentActivityLog\Extensions\LogCreateRecord;
 use Spatie\Permission\Models\Role;
 
 class CreateRole extends CreateRecord
 {
+    use LogCreateRecord;
+
     protected static string $resource = RoleResource::class;
 
     public Collection $permissions;
@@ -40,5 +43,7 @@ class CreateRole extends CreateRecord
         if ($this->record instanceof Role) {
             $this->record->syncPermissions($permissionModels);
         }
+
+        $this->logRecordCreated($this->record);
     }
 }

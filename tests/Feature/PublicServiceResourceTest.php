@@ -6,7 +6,9 @@ use App\Filament\Resources\PublicServiceResource\Pages\EditPublicService;
 use App\Filament\Resources\PublicServiceResource\Pages\ListPublicServices;
 use App\Models\Property;
 use App\Models\PublicService;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Spatie\Activitylog\Models\Activity;
 
 use function Pest\Livewire\livewire;
 
@@ -65,7 +67,7 @@ it('cannot render create page when user do not have permission', function () {
 });
 
 it('can create a public service', function () {
-    $parent  = Property::factory()->create();
+    $parent = Property::factory()->create();
     $newData = PublicService::factory()->make([
         'property_id' => $parent->id,
     ]);
@@ -91,6 +93,21 @@ it('can create a public service', function () {
         'is_domiciled' => $newData->is_domiciled,
         'property_id'  => $newData->property_id,
     ]);
+
+    expect(Activity::all()->last())
+        ->description->toBe('created')
+        ->subject_type->toBe(PublicService::class)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old'        => [],
+            'attributes' => [
+                'type'         => $newData->type,
+                'company'      => $newData->company,
+                'is_domiciled' => $newData->is_domiciled ? 'true' : 'false',
+                'property_id'  => $newData->property_id,
+            ],
+        ]));
 
     $this->assertAuthenticated();
 });
@@ -179,29 +196,49 @@ it('can save a public service', function () {
 
     $newData = PublicService::factory()
         ->make([
+            'company'     => 'EPB',
             'property_id' => $parent->id,
         ]);
 
+    $publicService = $parent->publicServices->first();
+
     livewire(EditPublicService::class, [
         'parent' => $parent,
-        'record' => $parent->publicServices->first()->getRouteKey(),
+        'record' => $publicService->getRouteKey(),
     ])
         ->assertFormExists()
         ->assertFormFieldExists('type')
         ->assertFormFieldExists('company')
         ->assertFormFieldExists('is_domiciled')
         ->fillForm([
-            'type'         => $newData->type,
+            'type'         => $publicService->type ? 'water' : 'electricity',
             'company'      => $newData->company,
-            'is_domiciled' => $newData->is_domiciled,
+            'is_domiciled' => ! $publicService->is_domiciled,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($parent->publicServices->first()->refresh())
-        ->type->tobe($newData->type)
+    expect(Activity::all()->last())
+        ->description->toBe('updated')
+        ->subject_type->toBe(PublicService::class)
+        ->subject_id->toBe($publicService->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old' => [
+                'type'         => $publicService->type,
+                'company'      => $publicService->company,
+                'is_domiciled' => $publicService->is_domiciled ? 'true' : 'false',
+            ],
+            'attributes' => [
+                'type'         => $publicService->type ? 'water' : 'electricity',
+                'company'      => $newData->company,
+                'is_domiciled' => ! $publicService->is_domiciled ? 'true' : 'false',
+            ],
+
+        ]))
+        ->and($publicService->refresh())
         ->company->tobe($newData->company)
-        ->is_domiciled->tobe($newData->is_domiciled)
         ->property_id->toBe($newData->property_id);
 });
 
@@ -252,6 +289,13 @@ it('can delete a public service', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($publicService);
+
+    expect(Activity::all()->last())
+        ->description->toBe('deleted')
+        ->subject_type->toBe(PublicService::class)
+        ->subject_id->toBe($publicService->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id);
 
     $this->assertAuthenticated();
 });

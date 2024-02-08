@@ -6,7 +6,9 @@ use App\Filament\Resources\InsuranceResource\Pages\ListInsurances;
 use App\Filament\Resources\PropertyResource;
 use App\Models\Insurance;
 use App\Models\Property;
+use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Spatie\Activitylog\Models\Activity;
 
 use function Pest\Livewire\livewire;
 
@@ -66,7 +68,7 @@ it('cannot render create page when user do not have permission', function () {
 });
 
 it('can create an insurance', function () {
-    $parent  = Property::factory()->create();
+    $parent = Property::factory()->create();
     $newData = Insurance::factory()->make([
         'property_id' => $parent->id,
     ]);
@@ -98,6 +100,24 @@ it('can create an insurance', function () {
         'expired_at'    => $newData->expired_at,
         'property_id'   => $parent->id,
     ]);
+
+    expect(Activity::all()->last())
+        ->description->toBe('created')
+        ->subject_type->toBe(Insurance::class)
+        ->subject_id->toBe(Insurance::latest()->first()->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old'        => [],
+            'attributes' => [
+                'policy_number' => $newData->policy_number,
+                'type'          => $newData->type,
+                'company'       => $newData->company,
+                'start_at'      => $newData->start_at->format('Y-m-d') . 'T05:00:00.000000Z',
+                'expired_at'    => $newData->expired_at->format('Y-m-d') . 'T05:00:00.000000Z',
+                'property.id'   => $parent->id,
+            ],
+        ]));
 
     $this->assertAuthenticated();
 });
@@ -194,6 +214,8 @@ it('can save an insurance', function () {
 
     $newData = Insurance::factory()
         ->make([
+            'type'        => 'Servicios',
+            'company'     => 'Seguros Bolivar',
             'property_id' => $parent->id,
         ]);
 
@@ -217,7 +239,29 @@ it('can save an insurance', function () {
         ->call('save')
         ->assertHasNoFormErrors();
 
-    expect($parent->insurances->first()->refresh())
+    expect(Activity::all()->last())
+        ->description->toBe('updated')
+        ->subject_type->toBe(Insurance::class)
+        ->subject_id->toBe($parent->insurances->first()->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id)
+        ->changes->toEqual(collect([
+            'old' => [
+                'policy_number' => $parent->insurances->first()->policy_number,
+                'type'          => $parent->insurances->first()->type,
+                'company'       => $parent->insurances->first()->company,
+                'start_at'      => $parent->insurances->first()->start_at->format('Y-m-d') . 'T05:00:00.000000Z',
+                'expired_at'    => $parent->insurances->first()->expired_at->format('Y-m-d') . 'T05:00:00.000000Z',
+            ],
+            'attributes' => [
+                'policy_number' => $newData->policy_number,
+                'type'          => $newData->type,
+                'company'       => $newData->company,
+                'start_at'      => $newData->start_at->format('Y-m-d') . 'T05:00:00.000000Z',
+                'expired_at'    => $newData->expired_at->format('Y-m-d') . 'T05:00:00.000000Z',
+            ],
+        ]))
+        ->and($parent->insurances->first()->refresh())
         ->policy_number->toBe($newData->policy_number)
         ->type->toBe($newData->type)
         ->company->toBe($newData->company)
@@ -281,6 +325,13 @@ it('can delete an insurance', function () {
         ->callAction(DeleteAction::class);
 
     $this->assertModelMissing($insurance);
+
+    expect(Activity::all()->last())
+        ->description->toBe('deleted')
+        ->subject_type->toBe(Insurance::class)
+        ->subject_id->toBe($insurance->id)
+        ->causer_type->toBe(User::class)
+        ->causer_id->toBe($this->superAdmin->id);
 
     $this->assertAuthenticated();
 });

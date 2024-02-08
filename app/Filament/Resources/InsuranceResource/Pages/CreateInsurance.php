@@ -6,10 +6,12 @@ use App\Filament\Resources\InsuranceResource;
 use App\Filament\Resources\PropertyResource;
 use App\Filament\Traits\HasParentResource;
 use Filament\Resources\Pages\CreateRecord;
+use Noxo\FilamentActivityLog\Extensions\LogCreateRecord;
 
 class CreateInsurance extends CreateRecord
 {
     use HasParentResource;
+    use LogCreateRecord;
 
     protected static string $parentResource = PropertyResource::class;
 

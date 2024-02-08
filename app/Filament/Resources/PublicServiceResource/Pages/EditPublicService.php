@@ -8,10 +8,12 @@ use App\Filament\Traits\HasParentResource;
 use Filament\Actions;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Noxo\FilamentActivityLog\Extensions\LogEditRecord;
 
 class EditPublicService extends EditRecord
 {
     use HasParentResource;
+    use LogEditRecord;
 
     protected static string $parentResource = PropertyResource::class;
 
