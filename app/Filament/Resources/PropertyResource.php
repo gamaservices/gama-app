@@ -248,7 +248,7 @@ class PropertyResource extends Resource
 
         $routeBaseName = static::getRouteBaseName(panel: $panel);
         $routeFullName = "{$routeBaseName}.{$name}";
-        $routePath     = Route::getRoutes()->getByName($routeFullName)->uri();
+        $routePath = Route::getRoutes()->getByName($routeFullName)->uri();
 
         if (str($routePath)->contains('{parent}')) {
             $parameters['parent'] ??= (request()->route('parent') ?? request()->input('parent'));

@@ -283,7 +283,7 @@ class RoleResource extends Resource
     public static function getTabFormComponentForPage(): Tab
     {
         $options = static::getPageOptions();
-        $count   = count($options);
+        $count = count($options);
 
         return Tab::make(__('filament-shield::filament-shield.pages'))
             ->visible(fn (): bool => (bool) Utils::isPageEntityEnabled() && $count > 0)
@@ -296,7 +296,7 @@ class RoleResource extends Resource
     public static function getTabFormComponentForWidget(): Tab
     {
         $options = static::getWidgetOptions();
-        $count   = count($options);
+        $count = count($options);
 
         return Tab::make(__('filament-shield::filament-shield.widgets'))
             ->visible(fn (): bool => (bool) Utils::isWidgetEntityEnabled() && $count > 0)
@@ -309,7 +309,7 @@ class RoleResource extends Resource
     public static function getTabFormComponentForCustomPermissions(): Tab
     {
         $options = static::getCustomPermissionOptions();
-        $count   = count($options);
+        $count = count($options);
 
         return Tab::make(__('filament-shield::filament-shield.custom'))
             ->visible(fn (): bool => (bool) Utils::isCustomPermissionEntityEnabled() && $count > 0)

@@ -13,7 +13,7 @@ class PropertySeeder extends Seeder
 {
     public function run(): void
     {
-        $antioquia_id    = State::where('name', 'Antioquia')->first()->id;
+        $antioquia_id = State::where('name', 'Antioquia')->first()->id;
         $cundinamarca_id = State::where('name', 'Cundinamarca')->first()->id;
 
         Property::factory()->count(100)->has(Insurance::factory()->count(2))

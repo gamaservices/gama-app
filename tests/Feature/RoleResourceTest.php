@@ -77,7 +77,7 @@ it('can create a role', function () {
         'guard_name' => 'web',
     ]);
 
-    $role       = Role::findByName('testing_role');
+    $role = Role::findByName('testing_role');
     $permission = Permission::findByName('view_any_property');
 
     $this->assertDatabaseHas('role_has_permissions', [
@@ -155,7 +155,7 @@ it('cannot render edit page when user do not have permission', function () {
 });
 
 it('can retrieve data', function () {
-    $role       = Role::create(['name' => 'testing_role']);
+    $role = Role::create(['name' => 'testing_role']);
     $permission = Permission::create(['name' => 'view_any_property']);
     $role->givePermissionTo($permission);
 

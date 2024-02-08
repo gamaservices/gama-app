@@ -68,7 +68,7 @@ it('cannot render create page when user do not have permission', function () {
 });
 
 it('can create an insurance', function () {
-    $parent  = Property::factory()->create();
+    $parent = Property::factory()->create();
     $newData = Insurance::factory()->make([
         'property_id' => $parent->id,
     ]);

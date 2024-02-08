@@ -8,7 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Noxo\FilamentActivityLog\Extensions\LogCreateRecord;
-use Noxo\FilamentActivityLog\Extensions\LogEditRecord;
 use Spatie\Permission\Models\Role;
 
 class CreateRole extends CreateRecord

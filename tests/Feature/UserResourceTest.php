@@ -55,7 +55,7 @@ it('cannot render create page when user do not have permission', function () {
 
 it('can create an user', function () {
     $newData = User::factory()->make();
-    $role    = Role::create(['name' => 'testing_role']);
+    $role = Role::create(['name' => 'testing_role']);
 
     livewire(CreateUser::class)
         ->assertFormExists()
@@ -174,9 +174,9 @@ it('can retrieve data', function () {
 });
 
 it('can save an user', function () {
-    $role    = Role::create(['name' => 'testing_role']);
+    $role = Role::create(['name' => 'testing_role']);
     $newRole = Role::create(['name' => 'new_role']);
-    $user    = User::factory()->create();
+    $user = User::factory()->create();
     $user->syncRoles($role);
     $newData = User::factory()->make();
 

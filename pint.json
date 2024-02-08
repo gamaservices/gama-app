@@ -3,14 +3,12 @@
     "rules": {
         "binary_operator_spaces": {
             "operators": {
-                "=>": "align_single_space_minimal",
-                "=": "align_single_space_minimal"
+                "=>": "align_single_space_minimal"
             }
         },
         "concat_space": {
             "spacing": "one"
         },
-        "no_unused_imports": false,
         "no_spaces_inside_parenthesis": true,
         "single_trait_insert_per_statement": true,
         "no_multiple_statements_per_line": true,

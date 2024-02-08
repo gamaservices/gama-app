@@ -7,7 +7,6 @@ use App\Models\PublicService;
 use Illuminate\Contracts\Support\Htmlable;
 use Noxo\FilamentActivityLog\Loggers\Logger;
 use Noxo\FilamentActivityLog\ResourceLogger\Field;
-use Noxo\FilamentActivityLog\ResourceLogger\RelationManager;
 use Noxo\FilamentActivityLog\ResourceLogger\ResourceLogger;
 
 class PublicServiceLogger extends Logger

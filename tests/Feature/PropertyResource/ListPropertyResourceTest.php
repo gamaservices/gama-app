@@ -1,13 +1,8 @@
 <?php
 
 use App\Filament\Resources\PropertyResource;
-use App\Filament\Resources\PropertyResource\Pages\CreateProperty;
-use App\Filament\Resources\PropertyResource\Pages\EditProperty;
 use App\Filament\Resources\PropertyResource\Pages\ListProperties;
 use App\Models\Property;
-use App\Models\User;
-use Filament\Actions\DeleteAction;
-use Spatie\Activitylog\Models\Activity;
 
 use function Pest\Livewire\livewire;
 

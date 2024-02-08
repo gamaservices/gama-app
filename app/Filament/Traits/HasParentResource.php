@@ -40,7 +40,7 @@ trait HasParentResource
 
     public function getBreadcrumbs(): array
     {
-        $resource       = $this->getResource();
+        $resource = $this->getResource();
         $parentResource = $this->getParentResource();
 
         $breadcrumbs = [
@@ -53,10 +53,10 @@ trait HasParentResource
         $parentView = 'view';
 
         if ($parentResource::hasPage($childIndex)) {
-            $url               = $parentResource::getUrl($childIndex, ['parent' => $this->parent]);
+            $url = $parentResource::getUrl($childIndex, ['parent' => $this->parent]);
             $breadcrumbs[$url] = $resource::getBreadCrumb();
         } elseif ($parentResource::hasPage($parentView)) {
-            $url               = $parentResource::getUrl($parentView, ['record' => $this->parent]);
+            $url = $parentResource::getUrl($parentView, ['record' => $this->parent]);
             $breadcrumbs[$url] = $resource::getBreadCrumb();
         }
 

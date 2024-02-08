@@ -67,7 +67,7 @@ it('cannot render create page when user do not have permission', function () {
 });
 
 it('can create a public service', function () {
-    $parent  = Property::factory()->create();
+    $parent = Property::factory()->create();
     $newData = PublicService::factory()->make([
         'property_id' => $parent->id,
     ]);
