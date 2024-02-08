@@ -28,6 +28,8 @@ it('cannot render list page when user do not have permission', function () {
 it('can list notary offices', function () {
     $notaryOffices = NotaryOffice::factory()->count(10)->create();
 
+    $this->notaryOffice->delete();
+
     livewire(ListNotaryOffices::class)
         ->assertCanSeeTableRecords($notaryOffices)
         ->assertCountTableRecords(10)
