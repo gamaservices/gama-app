@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\City;
+use App\Models\NotaryOffice;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -16,6 +17,8 @@ abstract class TestCase extends BaseTestCase
 
     protected City $city;
 
+    protected NotaryOffice $notaryOffice;
+
     protected User $superAdmin;
 
     protected User $user;
@@ -24,9 +27,13 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->state = State::factory()->create();
-        $this->city  = City::factory()->for($this->state)->create();
-        $this->user  = User::factory()->create();
+        $this->state        = State::factory()->create();
+        $this->city         = City::factory()->for($this->state)->create();
+        $this->user         = User::factory()->create();
+        $this->notaryOffice = NotaryOffice::factory()
+            ->for($this->state)
+            ->for($this->city)
+            ->create();
 
         $this->superAdmin = User::factory()->create();
         $this->superAdmin->assignRole(Role::create(['name' => 'super_admin']));
