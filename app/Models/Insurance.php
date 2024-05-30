@@ -19,10 +19,13 @@ class Insurance extends Model
         'expired_at',
     ];
 
-    protected $casts = [
-        'start_at'   => 'date',
-        'expired_at' => 'date',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'start_at'   => 'date',
+            'expired_at' => 'date',
+        ];
+    }
 
     /**
      * @return BelongsTo<Property, Insurance>

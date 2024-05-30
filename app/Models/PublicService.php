@@ -17,9 +17,12 @@ class PublicService extends Model
         'is_domiciled',
     ];
 
-    protected $casts = [
-        'is_domiciled' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'is_domiciled' => 'boolean',
+        ];
+    }
 
     /**
      * @return BelongsTo<Property, PublicService>
