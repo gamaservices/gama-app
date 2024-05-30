@@ -32,11 +32,14 @@ class Property extends Model
         'ownership_percentage',
     ];
 
-    protected $casts = [
-        'disable_at'    => 'date',
-        'acquired_at'   => 'date',
-        'is_horizontal' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'disable_at'    => 'date',
+            'acquired_at'   => 'date',
+            'is_horizontal' => 'boolean',
+        ];
+    }
 
     /**
      * @return BelongsTo<State, Property>
