@@ -19,7 +19,7 @@ class Insurance extends Model
         'expired_at',
     ];
 
-    public function casts(): array
+    protected function casts(): array
     {
         return [
             'start_at'   => 'date',
