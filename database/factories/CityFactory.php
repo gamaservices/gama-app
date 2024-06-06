@@ -16,6 +16,7 @@ class CityFactory extends Factory
     public function definition(): array
     {
         $states = collect(State::pluck('id'));
+
         return [
             'name'     => fake()->city(),
             'state_id' => $states->random(),

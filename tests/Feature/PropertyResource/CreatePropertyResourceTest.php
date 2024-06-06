@@ -63,7 +63,6 @@ it('can create a property', function () {
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Property::class, [
-        'address_id'             => $newData->address_id,
         'notary_office_id'       => $newData->notary_office_id,
         'customer'               => $newData->customer,
         'contract'               => $newData->contract,
@@ -87,7 +86,6 @@ it('can create a property', function () {
         ->changes->toEqual(collect([
             'old'        => [],
             'attributes' => [
-                'address_id'             => $newData->address_id,
                 'notary_office_id'       => $newData->notary_office_id,
                 'customer'               => $newData->customer,
                 'contract'               => $newData->contract,
@@ -120,8 +118,6 @@ it('can validate create input', function () {
             'matricula_inmobiliaria' => str_repeat('a', 256),
             'codigo_catastral'       => str_repeat('a', 256),
             'escritura'              => str_repeat('a', 256),
-            'neighborhood'           => str_repeat('a', 256),
-            'address'                => str_repeat('a', 256),
             'conservation_state'     => str_repeat('a', 256),
             'owner'                  => str_repeat('a', 256),
         ])
@@ -131,8 +127,6 @@ it('can validate create input', function () {
             'matricula_inmobiliaria' => 'max:255',
             'codigo_catastral'       => 'max:255',
             'escritura'              => 'max:255',
-            'neighborhood'           => 'max:255',
-            'address'                => 'max:255',
             'conservation_state'     => 'max:255',
             'owner'                  => 'max:255',
         ]);

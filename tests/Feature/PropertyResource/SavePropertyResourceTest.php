@@ -56,8 +56,6 @@ it('can save a property', function () {
     $property = Property::factory()->create();
 
     $newData = Property::factory()
-        ->for($this->state)
-        ->for($this->city)
         ->for($this->notaryOffice)
         ->make([
             'customer' => 'Davivienda',
@@ -68,16 +66,12 @@ it('can save a property', function () {
         'record' => $property->getRouteKey(),
     ])
         ->assertFormExists()
-        ->assertFormFieldExists('state_id')
-        ->assertFormFieldExists('city_id')
         ->assertFormFieldExists('notary_office_id')
         ->assertFormFieldExists('customer')
         ->assertFormFieldExists('contract')
         ->assertFormFieldExists('matricula_inmobiliaria')
         ->assertFormFieldExists('codigo_catastral')
         ->assertFormFieldExists('escritura')
-        ->assertFormFieldExists('neighborhood')
-        ->assertFormFieldExists('address')
         ->assertFormFieldExists('type')
         ->assertFormFieldExists('is_horizontal')
         ->assertFormFieldExists('area')
@@ -87,16 +81,12 @@ it('can save a property', function () {
         ->assertFormFieldExists('disabled_at')
         ->assertFormFieldExists('acquired_at')
         ->fillForm([
-            'state_id'               => $newData->state_id,
-            'city_id'                => $newData->city_id,
             'notary_office_id'       => $newData->notary_office_id,
             'customer'               => $newData->customer,
             'contract'               => $newData->contract,
             'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
             'codigo_catastral'       => $newData->codigo_catastral,
             'escritura'              => $newData->escritura,
-            'neighborhood'           => $newData->neighborhood,
-            'address'                => $newData->address,
             'type'                   => $property->type === 'rural' ? 'urban' : 'rural',
             'is_horizontal'          => ! $property->is_horizontal,
             'area'                   => $newData->area,
@@ -115,16 +105,12 @@ it('can save a property', function () {
         ->causer_id->toBe($this->superAdmin->id)
         ->changes->toEqual(collect([
             'old' => [
-                'state.name'             => null,
-                'city.name'              => null,
                 'notary_office_id'       => $property->notary_office_id,
                 'customer'               => $property->customer,
                 'contract'               => $property->contract,
                 'matricula_inmobiliaria' => $property->matricula_inmobiliaria,
                 'codigo_catastral'       => $property->codigo_catastral,
                 'escritura'              => $property->escritura,
-                'neighborhood'           => $property->neighborhood,
-                'address'                => $property->address,
                 'type'                   => $property->type,
                 'is_horizontal'          => $property->is_horizontal ? 'true' : 'false',
                 'area'                   => $property->area,
@@ -133,16 +119,12 @@ it('can save a property', function () {
                 'ownership_percentage'   => $property->ownership_percentage,
             ],
             'attributes' => [
-                'state.name'             => $newData->state->name,
-                'city.name'              => $newData->city->name,
                 'notary_office_id'       => $newData->notary_office_id,
                 'customer'               => $newData->customer,
                 'contract'               => $newData->contract,
                 'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
                 'codigo_catastral'       => $newData->codigo_catastral,
                 'escritura'              => $newData->escritura,
-                'neighborhood'           => $newData->neighborhood,
-                'address'                => $newData->address,
                 'type'                   => $property->type === 'rural' ? 'urban' : 'rural',
                 'is_horizontal'          => ! $property->is_horizontal ? 'true' : 'false',
                 'area'                   => $newData->area,
@@ -152,16 +134,12 @@ it('can save a property', function () {
             ],
         ]))
         ->and($property->refresh())
-        ->state_id->toBe($newData->state_id)
-        ->city_id->toBe($newData->city_id)
         ->notary_office_id->toBe($newData->notary_office_id)
         ->customer->toBe($newData->customer)
         ->contract->toBe($newData->contract)
         ->matricula_inmobiliaria->toBe($newData->matricula_inmobiliaria)
         ->codigo_catastral->toBe($newData->codigo_catastral)
         ->escritura->toBe($newData->escritura)
-        ->neighborhood->toBe($newData->neighborhood)
-        ->address->toBe($newData->address)
         ->area->toBe($newData->area)
         ->owner->toBe($newData->owner)
         ->ownership_percentage->toBe($newData->ownership_percentage);
@@ -187,8 +165,6 @@ it('can validate edit input', function () {
             'matricula_inmobiliaria' => str_repeat('a', 256),
             'codigo_catastral'       => str_repeat('a', 256),
             'escritura'              => str_repeat('a', 256),
-            'neighborhood'           => str_repeat('a', 256),
-            'address'                => str_repeat('a', 256),
             'conservation_state'     => str_repeat('a', 256),
             'owner'                  => str_repeat('a', 256),
         ])
@@ -198,8 +174,6 @@ it('can validate edit input', function () {
             'matricula_inmobiliaria' => 'max:255',
             'codigo_catastral'       => 'max:255',
             'escritura'              => 'max:255',
-            'neighborhood'           => 'max:255',
-            'address'                => 'max:255',
             'conservation_state'     => 'max:255',
             'owner'                  => 'max:255',
         ]);

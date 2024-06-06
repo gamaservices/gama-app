@@ -28,10 +28,6 @@ class NotaryOfficeResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('state_id')
-                    ->relationship('state', 'name')
-                    ->required()
-                    ->label('Departamento'),
                 Select::make('city_id')
                     ->relationship('city', 'name')
                     ->required()
@@ -48,10 +44,6 @@ class NotaryOfficeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('state.name')
-                    ->numeric()
-                    ->sortable()
-                    ->label('Departamento'),
                 TextColumn::make('city.name')
                     ->numeric()
                     ->sortable()
