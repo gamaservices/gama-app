@@ -25,23 +25,17 @@ it('cannot render create page when user do not have permission', function () {
 
 it('can create a property', function () {
     $newData = Property::factory()
-        ->for($this->state)
-        ->for($this->city)
         ->for($this->notaryOffice)
         ->make();
 
     livewire(CreateProperty::class)
         ->assertFormExists()
-        ->assertFormFieldExists('state_id')
-        ->assertFormFieldExists('city_id')
         ->assertFormFieldExists('notary_office_id')
         ->assertFormFieldExists('customer')
         ->assertFormFieldExists('contract')
         ->assertFormFieldExists('matricula_inmobiliaria')
         ->assertFormFieldExists('codigo_catastral')
         ->assertFormFieldExists('escritura')
-        ->assertFormFieldExists('neighborhood')
-        ->assertFormFieldExists('address')
         ->assertFormFieldExists('type')
         ->assertFormFieldExists('is_horizontal')
         ->assertFormFieldExists('area')
@@ -51,16 +45,13 @@ it('can create a property', function () {
         ->assertFormFieldExists('disabled_at')
         ->assertFormFieldExists('acquired_at')
         ->fillForm([
-            'state_id'               => $newData->state_id,
-            'city_id'                => $newData->city_id,
+            'address_id'             => $newData->address_id,
             'notary_office_id'       => $newData->notary_office_id,
             'customer'               => $newData->customer,
             'contract'               => $newData->contract,
             'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
             'codigo_catastral'       => $newData->codigo_catastral,
             'escritura'              => $newData->escritura,
-            'neighborhood'           => $newData->neighborhood,
-            'address'                => $newData->address,
             'type'                   => $newData->type,
             'is_horizontal'          => $newData->is_horizontal,
             'area'                   => $newData->area,
@@ -72,16 +63,13 @@ it('can create a property', function () {
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Property::class, [
-        'state_id'               => $newData->state_id,
-        'city_id'                => $newData->city_id,
+        'address_id'             => $newData->address_id,
         'notary_office_id'       => $newData->notary_office_id,
         'customer'               => $newData->customer,
         'contract'               => $newData->contract,
         'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
         'codigo_catastral'       => $newData->codigo_catastral,
         'escritura'              => $newData->escritura,
-        'neighborhood'           => $newData->neighborhood,
-        'address'                => $newData->address,
         'type'                   => $newData->type,
         'is_horizontal'          => $newData->is_horizontal,
         'area'                   => $newData->area,
@@ -99,16 +87,13 @@ it('can create a property', function () {
         ->changes->toEqual(collect([
             'old'        => [],
             'attributes' => [
-                'state.name'             => $newData->state->name,
-                'city.name'              => $newData->city->name,
+                'address_id'             => $newData->address_id,
                 'notary_office_id'       => $newData->notary_office_id,
                 'customer'               => $newData->customer,
                 'contract'               => $newData->contract,
                 'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
                 'codigo_catastral'       => $newData->codigo_catastral,
                 'escritura'              => $newData->escritura,
-                'neighborhood'           => $newData->neighborhood,
-                'address'                => $newData->address,
                 'type'                   => $newData->type,
                 'is_horizontal'          => $newData->is_horizontal ? 'true' : 'false',
                 'area'                   => $newData->area,

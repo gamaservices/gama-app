@@ -33,16 +33,12 @@ it('can retrieve data', function () {
         'record' => $property->getRouteKey(),
     ])
         ->assertFormSet([
-            'state_id'               => $property->state_id,
-            'city_id'                => $property->city_id,
             'notary_office_id'       => $property->notary_office_id,
             'customer'               => $property->customer,
             'contract'               => $property->contract,
             'matricula_inmobiliaria' => $property->matricula_inmobiliaria,
             'codigo_catastral'       => $property->codigo_catastral,
             'escritura'              => $property->escritura,
-            'neighborhood'           => $property->neighborhood,
-            'address'                => $property->address,
             'type'                   => $property->type,
             'is_horizontal'          => $property->is_horizontal,
             'area'                   => $property->area,

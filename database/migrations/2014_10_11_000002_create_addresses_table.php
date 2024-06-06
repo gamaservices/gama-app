@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('building_name', 255)->nullable();
             $table->string('apartment', 255)->nullable();
             $table->json('observations')->nullable();
-            $table->geography('location')->nullable();
 
             $table->timestamps();
 

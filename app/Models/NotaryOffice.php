@@ -18,14 +18,6 @@ class NotaryOffice extends Model
     ];
 
     /**
-     * @return BelongsTo<State, NotaryOffice>
-     */
-    public function state(): BelongsTo
-    {
-        return $this->belongsTo(State::class);
-    }
-
-    /**
      * @return BelongsTo<City, NotaryOffice>
      */
     public function city(): BelongsTo

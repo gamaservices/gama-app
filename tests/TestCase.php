@@ -30,10 +30,7 @@ abstract class TestCase extends BaseTestCase
         $this->state = State::factory()->create();
         $this->city = City::factory()->for($this->state)->create();
         $this->user = User::factory()->create();
-        $this->notaryOffice = NotaryOffice::factory()
-            ->for($this->state)
-            ->for($this->city)
-            ->create();
+        $this->notaryOffice = NotaryOffice::factory()->for($this->city)->create();
 
         $this->superAdmin = User::factory()->create();
         $this->superAdmin->assignRole(Role::create(['name' => 'super_admin']));

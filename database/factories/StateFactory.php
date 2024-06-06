@@ -10,15 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class StateFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'name' => 'Antioquia',
-            'code' => '01',
+            'name' => fake()->word(),
+            'code' => random_int(1, 100),
         ];
     }
 }

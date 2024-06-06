@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Address;
+use App\Models\NotaryOffice;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +17,6 @@ return new class extends Migration
             $table->string('matricula_inmobiliaria');
             $table->string('codigo_catastral')->nullable();
             $table->string('escritura')->nullable();
-            $table->string('neighborhood')->nullable();
-            $table->string('address')->nullable();
             $table->string('type')->nullable();
             $table->boolean('is_horizontal')->nullable();
             $table->float('area')->nullable();
@@ -32,7 +31,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreignIdFor(Address::class);
-            $table->foreignId('notary_office_id')->nullable()->constrained('notary_offices');
+            $table->foreignIdFor(NotaryOffice::class);
         });
     }
 

@@ -14,16 +14,13 @@ class Property extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'state_id',
-        'city_id',
         'notary_office_id',
+        'address_id',
         'customer',
         'contract',
         'matricula_inmobiliaria',
         'codigo_catastral',
         'escritura',
-        'neighborhood',
-        'address',
         'type',
         'is_horizontal',
         'area',

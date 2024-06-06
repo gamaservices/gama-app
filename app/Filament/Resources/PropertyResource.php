@@ -49,6 +49,7 @@ class PropertyResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('address_id'),
                 TextInput::make('contract')
                     ->maxLength(255)
                     ->label('ID BRP'),
@@ -59,18 +60,6 @@ class PropertyResource extends Resource
                 TextInput::make('codigo_catastral')
                     ->maxLength(255)
                     ->label('Código Catastral'),
-                Select::make('state_id')
-                    ->relationship('state', 'name')
-                    ->label('Departamento'),
-                Select::make('city_id')
-                    ->relationship('city', 'name')
-                    ->label('Ciudad o municipio'),
-                TextInput::make('neighborhood')
-                    ->maxLength(255)
-                    ->label('Barrio o Vereda'),
-                TextInput::make('address')
-                    ->maxLength(255)
-                    ->label('Dirección'),
                 TextInput::make('escritura')
                     ->maxLength(255)
                     ->label('No. de Escritura'),
@@ -115,12 +104,6 @@ class PropertyResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('state.name')
-                    ->sortable()
-                    ->label('Departamento'),
-                TextColumn::make('city.name')
-                    ->sortable()
-                    ->label('Ciudad o municipio'),
                 TextColumn::make('notaryOffice.id')
                     ->numeric()
                     ->sortable()
@@ -143,9 +126,6 @@ class PropertyResource extends Resource
                 TextColumn::make('neighborhood')
                     ->searchable()
                     ->label('Barrio o Vereda'),
-                TextColumn::make('address')
-                    ->searchable()
-                    ->label('Dirección'),
                 TextColumn::make('type')
                     ->searchable()
                     ->label('Tipo de predio'),

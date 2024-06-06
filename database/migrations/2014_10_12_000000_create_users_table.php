@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreignIdFor(Address::class)->nullable();
+            $table->foreignIdFor(Address::class)->nullable()->default(null);
         });
     }
 

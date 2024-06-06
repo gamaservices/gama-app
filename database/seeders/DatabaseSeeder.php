@@ -10,6 +10,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call([
+            StateSeeder::class,
+            CitySeeder::class,
+            PropertySeeder::class,
+        ]);
+
         $master = User::factory()
             ->create([
                 'name'  => 'Master',
@@ -23,11 +29,5 @@ class DatabaseSeeder extends Seeder
                 'name'  => 'Admin',
                 'email' => 'admin@gestioncorporativa.com.co',
             ]);
-
-        $this->call([
-            StateSeeder::class,
-            CitySeeder::class,
-            PropertySeeder::class,
-        ]);
     }
 }

@@ -22,12 +22,4 @@ class State extends Model
     {
         return $this->hasMany(City::class);
     }
-
-    /**
-     * @return HasMany<Property>
-     */
-    public function properties(): HasMany
-    {
-        return $this->hasMany(Property::class);
-    }
 }
