@@ -21,17 +21,13 @@ class PropertySeeder extends Seeder
             ->for(NotaryOffice::factory()->state([
                 'state_id' => $antioquia_id,
             ]))
-            ->create([
-                'state_id' => $antioquia_id,
-            ]);
+            ->create();
 
         Property::factory()->count(100)->has(Insurance::factory()->count(2))
             ->has(PublicService::factory()->count(3))
             ->for(NotaryOffice::factory()->state([
                 'state_id' => $cundinamarca_id,
             ]))
-            ->create([
-                'state_id' => $cundinamarca_id,
-            ]);
+            ->create();
     }
 }

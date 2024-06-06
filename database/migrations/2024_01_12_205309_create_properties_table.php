@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Address;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,8 +31,7 @@ return new class extends Migration
 
             $table->softDeletes();
 
-            $table->foreignId('state_id')->nullable()->constrained('states');
-            $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->foreignIdFor(Address::class);
             $table->foreignId('notary_office_id')->nullable()->constrained('notary_offices');
         });
     }

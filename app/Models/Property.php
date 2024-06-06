@@ -42,19 +42,11 @@ class Property extends Model
     }
 
     /**
-     * @return BelongsTo<State, Property>
+     * @return BelongsTo<Address, Property>
      */
-    public function state(): BelongsTo
+    public function address(): BelongsTo
     {
-        return $this->belongsTo(State::class);
-    }
-
-    /**
-     * @return BelongsTo<City, Property>
-     */
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(Address::class);
     }
 
     /**

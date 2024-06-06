@@ -5,6 +5,7 @@ namespace App\Models;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -27,6 +28,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'address_id',
     ];
 
     /**
@@ -45,5 +47,13 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
         ];
+    }
+
+    /**
+     * @return BelongsTo<Address, Property>
+     */
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 }
