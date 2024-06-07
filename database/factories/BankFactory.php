@@ -15,10 +15,10 @@ class BankFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company,
-            'first_email' => $this->faker->unique()->safeEmail,
+            'name'         => $this->faker->company,
+            'first_email'  => $this->faker->unique()->safeEmail,
             'second_email' => $this->faker->unique()->safeEmail,
-            'first_phone' => $this->faker->unique()->phoneNumber,
+            'first_phone'  => $this->faker->unique()->phoneNumber,
             'second_phone' => $this->faker->unique()->phoneNumber,
         ];
     }

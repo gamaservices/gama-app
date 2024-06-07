@@ -14,6 +14,7 @@ class Property extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'bank_id',
         'notary_office_id',
         'address_id',
         'contract',

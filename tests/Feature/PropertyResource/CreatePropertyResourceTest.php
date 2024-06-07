@@ -24,12 +24,11 @@ it('cannot render create page when user do not have permission', function () {
 });
 
 it('can create a property', function () {
-    $newData = Property::factory()
-        ->for($this->notaryOffice)
-        ->make();
+    $newData = Property::factory()->make();
 
     livewire(CreateProperty::class)
         ->assertFormExists()
+        ->assertFormFieldExists('bank_id')
         ->assertFormFieldExists('notary_office_id')
         ->assertFormFieldExists('contract')
         ->assertFormFieldExists('matricula_inmobiliaria')
@@ -43,32 +42,33 @@ it('can create a property', function () {
         ->assertFormFieldExists('disabled_at')
         ->assertFormFieldExists('acquired_at')
         ->fillForm([
-            'address_id'             => $newData->address_id,
-            'notary_office_id'       => $newData->notary_office_id,
-            'contract'               => $newData->contract,
-            'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
-            'codigo_catastral'       => $newData->codigo_catastral,
-            'escritura'              => $newData->escritura,
-            'type'                   => $newData->type,
-            'is_horizontal'          => $newData->is_horizontal,
-            'area'                   => $newData->area,
-            'conservation_state'     => $newData->conservation_state,
-            'bank_ownership_percentage'   => $newData->bank_ownership_percentage,
+            'bank_id'                   => $newData->bank_id,
+            'address_id'                => $newData->address_id,
+            'notary_office_id'          => $newData->notary_office_id,
+            'contract'                  => $newData->contract,
+            'matricula_inmobiliaria'    => $newData->matricula_inmobiliaria,
+            'codigo_catastral'          => $newData->codigo_catastral,
+            'escritura'                 => $newData->escritura,
+            'type'                      => $newData->type,
+            'is_horizontal'             => $newData->is_horizontal,
+            'area'                      => $newData->area,
+            'conservation_state'        => $newData->conservation_state,
+            'bank_ownership_percentage' => $newData->bank_ownership_percentage,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Property::class, [
-        'notary_office_id'       => $newData->notary_office_id,
-        'contract'               => $newData->contract,
-        'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
-        'codigo_catastral'       => $newData->codigo_catastral,
-        'escritura'              => $newData->escritura,
-        'type'                   => $newData->type,
-        'is_horizontal'          => $newData->is_horizontal,
-        'area'                   => $newData->area,
-        'conservation_state'     => $newData->conservation_state,
-        'bank_ownership_percentage'   => $newData->bank_ownership_percentage,
+        'notary_office_id'          => $newData->notary_office_id,
+        'contract'                  => $newData->contract,
+        'matricula_inmobiliaria'    => $newData->matricula_inmobiliaria,
+        'codigo_catastral'          => $newData->codigo_catastral,
+        'escritura'                 => $newData->escritura,
+        'type'                      => $newData->type,
+        'is_horizontal'             => $newData->is_horizontal,
+        'area'                      => $newData->area,
+        'conservation_state'        => $newData->conservation_state,
+        'bank_ownership_percentage' => $newData->bank_ownership_percentage,
     ]);
 
     expect(Activity::all()->last())
@@ -80,16 +80,16 @@ it('can create a property', function () {
         ->changes->toEqual(collect([
             'old'        => [],
             'attributes' => [
-                'notary_office_id'       => $newData->notary_office_id,
-                'contract'               => $newData->contract,
-                'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
-                'codigo_catastral'       => $newData->codigo_catastral,
-                'escritura'              => $newData->escritura,
-                'type'                   => $newData->type,
-                'is_horizontal'          => $newData->is_horizontal ? 'true' : 'false',
-                'area'                   => $newData->area,
-                'conservation_state'     => $newData->conservation_state,
-                'bank_ownership_percentage'   => $newData->bank_ownership_percentage,
+                'notary_office_id'          => $newData->notary_office_id,
+                'contract'                  => $newData->contract,
+                'matricula_inmobiliaria'    => $newData->matricula_inmobiliaria,
+                'codigo_catastral'          => $newData->codigo_catastral,
+                'escritura'                 => $newData->escritura,
+                'type'                      => $newData->type,
+                'is_horizontal'             => $newData->is_horizontal ? 'true' : 'false',
+                'area'                      => $newData->area,
+                'conservation_state'        => $newData->conservation_state,
+                'bank_ownership_percentage' => $newData->bank_ownership_percentage,
             ],
         ]));
 

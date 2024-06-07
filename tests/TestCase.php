@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Bank;
 use App\Models\City;
 use App\Models\NotaryOffice;
 use App\Models\State;
@@ -23,6 +24,8 @@ abstract class TestCase extends BaseTestCase
 
     protected User $user;
 
+    protected Bank $bank;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,6 +34,7 @@ abstract class TestCase extends BaseTestCase
         $this->city = City::factory()->for($this->state)->create();
         $this->user = User::factory()->create();
         $this->notaryOffice = NotaryOffice::factory()->for($this->city)->create();
+        $this->bank = Bank::factory()->create();
 
         $this->superAdmin = User::factory()->create();
         $this->superAdmin->assignRole(Role::create(['name' => 'super_admin']));

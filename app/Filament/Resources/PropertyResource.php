@@ -50,6 +50,7 @@ class PropertyResource extends Resource
         return $form
             ->schema([
                 TextInput::make('address_id'),
+                TextInput::make('bank_id'),
                 TextInput::make('contract')
                     ->maxLength(255)
                     ->label('ID BRP'),
