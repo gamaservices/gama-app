@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StateSeeder::class,
             CitySeeder::class,
+            BankSeeder::class,
             PropertySeeder::class,
         ]);
 

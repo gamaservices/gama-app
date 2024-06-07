@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Address;
+use App\Models\Bank;
 use App\Models\City;
 use App\Models\NotaryOffice;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,6 +18,7 @@ class PropertyFactory extends Factory
      */
     public function definition(): array
     {
+        $bank = Bank::inRandomOrder()->first();
         $city = City::inRandomOrder()->first();
         $address = Address::factory()->for($city)->create();
         $notaryOffice = NotaryOffice::factory()->for($city)->create();
@@ -35,6 +37,7 @@ class PropertyFactory extends Factory
 
             'address_id'             => $address->id,
             'notary_office_id'       => $notaryOffice->id,
+            'bank_id'                => $bank->id,
         ];
     }
 }

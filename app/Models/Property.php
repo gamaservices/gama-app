@@ -67,4 +67,12 @@ class Property extends Model
     {
         return $this->hasMany(PublicService::class);
     }
+
+    /**
+     * @return BelongsTo<Bank, Property>
+     */
+    public function bank(): BelongsTo
+    {
+        return $this->belongsTo(Bank::class);
+    }
 }
