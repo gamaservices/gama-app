@@ -34,7 +34,6 @@ it('can retrieve data', function () {
     ])
         ->assertFormSet([
             'notary_office_id'       => $property->notary_office_id,
-            'customer'               => $property->customer,
             'contract'               => $property->contract,
             'matricula_inmobiliaria' => $property->matricula_inmobiliaria,
             'codigo_catastral'       => $property->codigo_catastral,
@@ -43,8 +42,7 @@ it('can retrieve data', function () {
             'is_horizontal'          => $property->is_horizontal,
             'area'                   => $property->area,
             'conservation_state'     => $property->conservation_state,
-            'owner'                  => $property->owner,
-            'ownership_percentage'   => $property->ownership_percentage,
+            'bank_ownership_percentage'   => $property->bank_ownership_percentage,
             'disabled_at'            => $property->disabled_at,
             'acquired_at'            => $property->acquired_at->format('Y-m-d'),
         ]);
@@ -57,17 +55,13 @@ it('can save a property', function () {
 
     $newData = Property::factory()
         ->for($this->notaryOffice)
-        ->make([
-            'customer' => 'Davivienda',
-            'owner'    => 'Davivienda',
-        ]);
+        ->make();
 
     livewire(EditProperty::class, [
         'record' => $property->getRouteKey(),
     ])
         ->assertFormExists()
         ->assertFormFieldExists('notary_office_id')
-        ->assertFormFieldExists('customer')
         ->assertFormFieldExists('contract')
         ->assertFormFieldExists('matricula_inmobiliaria')
         ->assertFormFieldExists('codigo_catastral')
@@ -76,13 +70,11 @@ it('can save a property', function () {
         ->assertFormFieldExists('is_horizontal')
         ->assertFormFieldExists('area')
         ->assertFormFieldExists('conservation_state')
-        ->assertFormFieldExists('owner')
-        ->assertFormFieldExists('ownership_percentage')
+        ->assertFormFieldExists('bank_ownership_percentage')
         ->assertFormFieldExists('disabled_at')
         ->assertFormFieldExists('acquired_at')
         ->fillForm([
             'notary_office_id'       => $newData->notary_office_id,
-            'customer'               => $newData->customer,
             'contract'               => $newData->contract,
             'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
             'codigo_catastral'       => $newData->codigo_catastral,
@@ -91,8 +83,7 @@ it('can save a property', function () {
             'is_horizontal'          => ! $property->is_horizontal,
             'area'                   => $newData->area,
             'conservation_state'     => $property->conservation_state === 'good' ? 'bad' : 'good',
-            'owner'                  => $newData->owner,
-            'ownership_percentage'   => $newData->ownership_percentage,
+            'bank_ownership_percentage'   => $newData->bank_ownership_percentage,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
@@ -106,7 +97,6 @@ it('can save a property', function () {
         ->changes->toEqual(collect([
             'old' => [
                 'notary_office_id'       => $property->notary_office_id,
-                'customer'               => $property->customer,
                 'contract'               => $property->contract,
                 'matricula_inmobiliaria' => $property->matricula_inmobiliaria,
                 'codigo_catastral'       => $property->codigo_catastral,
@@ -115,12 +105,10 @@ it('can save a property', function () {
                 'is_horizontal'          => $property->is_horizontal ? 'true' : 'false',
                 'area'                   => $property->area,
                 'conservation_state'     => $property->conservation_state,
-                'owner'                  => $property->owner,
-                'ownership_percentage'   => $property->ownership_percentage,
+                'bank_ownership_percentage'   => $property->bank_ownership_percentage,
             ],
             'attributes' => [
                 'notary_office_id'       => $newData->notary_office_id,
-                'customer'               => $newData->customer,
                 'contract'               => $newData->contract,
                 'matricula_inmobiliaria' => $newData->matricula_inmobiliaria,
                 'codigo_catastral'       => $newData->codigo_catastral,
@@ -129,20 +117,17 @@ it('can save a property', function () {
                 'is_horizontal'          => ! $property->is_horizontal ? 'true' : 'false',
                 'area'                   => $newData->area,
                 'conservation_state'     => $property->conservation_state === 'good' ? 'bad' : 'good',
-                'owner'                  => $newData->owner,
-                'ownership_percentage'   => $newData->ownership_percentage,
+                'bank_ownership_percentage'   => $newData->bank_ownership_percentage,
             ],
         ]))
         ->and($property->refresh())
         ->notary_office_id->toBe($newData->notary_office_id)
-        ->customer->toBe($newData->customer)
         ->contract->toBe($newData->contract)
         ->matricula_inmobiliaria->toBe($newData->matricula_inmobiliaria)
         ->codigo_catastral->toBe($newData->codigo_catastral)
         ->escritura->toBe($newData->escritura)
         ->area->toBe($newData->area)
-        ->owner->toBe($newData->owner)
-        ->ownership_percentage->toBe($newData->ownership_percentage);
+        ->bank_ownership_percentage->toBe($newData->bank_ownership_percentage);
 
     $this->assertAuthenticated();
 });
@@ -166,7 +151,6 @@ it('can validate edit input', function () {
             'codigo_catastral'       => str_repeat('a', 256),
             'escritura'              => str_repeat('a', 256),
             'conservation_state'     => str_repeat('a', 256),
-            'owner'                  => str_repeat('a', 256),
         ])
         ->call('save')
         ->assertHasFormErrors([
@@ -175,7 +159,6 @@ it('can validate edit input', function () {
             'codigo_catastral'       => 'max:255',
             'escritura'              => 'max:255',
             'conservation_state'     => 'max:255',
-            'owner'                  => 'max:255',
         ]);
 
     $this->assertAuthenticated();

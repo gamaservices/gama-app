@@ -66,10 +66,6 @@ class PropertyResource extends Resource
                 Select::make('notary_office_id')
                     ->relationship('notaryOffice', 'id')
                     ->label('Notaría'),
-                TextInput::make('customer')
-                    ->maxLength(255)
-                    ->default('Banco de Bogotá')
-                    ->label('Cliente'),
                 Radio::make('type')
                     ->options([
                         'rural'  => 'Rural',
@@ -85,10 +81,7 @@ class PropertyResource extends Resource
                 TextInput::make('conservation_state')
                     ->maxLength(255)
                     ->label('Estado de conservación'),
-                TextInput::make('owner')
-                    ->maxLength(255)
-                    ->label('Propietario'),
-                TextInput::make('ownership_percentage')
+                TextInput::make('bank_ownership_percentage')
                     ->numeric()
                     ->minValue(0.1)
                     ->maxValue(100)
@@ -108,9 +101,6 @@ class PropertyResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->label('Notaría'),
-                TextColumn::make('customer')
-                    ->searchable()
-                    ->label('Cliente'),
                 TextColumn::make('contract')
                     ->searchable()
                     ->label('ID BRP'),
@@ -139,10 +129,7 @@ class PropertyResource extends Resource
                 TextColumn::make('conservation_state')
                     ->searchable()
                     ->label('Estado de conservación'),
-                TextColumn::make('owner')
-                    ->searchable()
-                    ->label('Propietario'),
-                IconColumn::make('ownership_percentage')
+                IconColumn::make('bank_ownership_percentage')
                     ->boolean()
                     ->label('% de derechos'),
                 TextColumn::make('disabled_at')

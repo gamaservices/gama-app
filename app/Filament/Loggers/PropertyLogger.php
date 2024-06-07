@@ -32,8 +32,6 @@ class PropertyLogger extends Logger
                     ->label('No. de escritura'),
                 Field::make('notary_office_id')
                     ->label('Notaría'),
-                Field::make('customer')
-                    ->label('Cliente'),
                 Field::make('type')
                     ->label('Tipo de predio'),
                 Field::make('is_horizontal')
@@ -43,9 +41,7 @@ class PropertyLogger extends Logger
                     ->label('Área'),
                 Field::make('conservation_state')
                     ->label('Estado de conservación'),
-                Field::make('owner')
-                    ->label('Propietario'),
-                Field::make('ownership_percentage')
+                Field::make('bank_ownership_percentage')
                     ->label('Porcentaje de derechos'),
                 Field::make('disabled_at')
                     ->date()

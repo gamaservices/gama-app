@@ -12,7 +12,6 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('customer')->default('Banco de Bogotá');
             $table->string('contract')->nullable();
             $table->string('matricula_inmobiliaria');
             $table->string('codigo_catastral')->nullable();
@@ -21,8 +20,7 @@ return new class extends Migration
             $table->boolean('is_horizontal')->nullable();
             $table->float('area')->nullable();
             $table->string('conservation_state')->nullable();
-            $table->string('owner')->nullable();
-            $table->tinyInteger('ownership_percentage')->nullable();
+            $table->tinyInteger('bank_ownership_percentage')->nullable();
 
             $table->timestamp('disable_at')->nullable();
             $table->timestamp('acquired_at')->nullable();

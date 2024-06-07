@@ -16,7 +16,6 @@ class Property extends Model
     protected $fillable = [
         'notary_office_id',
         'address_id',
-        'customer',
         'contract',
         'matricula_inmobiliaria',
         'codigo_catastral',
@@ -25,8 +24,7 @@ class Property extends Model
         'is_horizontal',
         'area',
         'conservation_state',
-        'owner',
-        'ownership_percentage',
+        'bank_ownership_percentage',
     ];
 
     protected function casts(): array
