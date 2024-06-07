@@ -50,7 +50,7 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
-     * @return BelongsTo<Address, Property>
+     * @return BelongsTo<Address, User>
      */
     public function address(): BelongsTo
     {
