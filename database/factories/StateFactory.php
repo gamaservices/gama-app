@@ -16,7 +16,7 @@ class StateFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'code' => random_int(1, 100),
+            'code' => random_int(1, 99),
         ];
     }
 }
