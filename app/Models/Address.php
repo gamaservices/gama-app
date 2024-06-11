@@ -5,30 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class NotaryOffice extends Model
+class Address extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'number',
+        'base_address',
+        'neighborhood',
         'city_id',
+        'building_name',
+        'apartment',
+        'observations',
     ];
 
     /**
-     * @return BelongsTo<City, NotaryOffice>
+     * @return BelongsTo<City, Address>
      */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
-    }
-
-    /**
-     * @return HasMany<Property>
-     */
-    public function properties(): HasMany
-    {
-        return $this->hasMany(Property::class);
     }
 }

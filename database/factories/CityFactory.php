@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\State;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,15 +11,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CityFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
+        $states = collect(State::pluck('id'));
+
         return [
-            'name'     => 'Medellín',
-            'state_id' => 1,
+            'name'     => fake()->city(),
+            'state_id' => $states->random(),
         ];
     }
 }

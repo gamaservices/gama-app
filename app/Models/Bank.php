@@ -6,20 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class State extends Model
+class Bank extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'code',
+        'first_email',
+        'second_email',
+        'first_phone',
+        'second_phone',
     ];
 
     /**
-     * @return HasMany<City>
+     * @return HasMany<Property>
      */
-    public function cities(): HasMany
+    public function properties(): HasMany
     {
-        return $this->hasMany(City::class);
+        return $this->hasMany(Property::class);
     }
 }

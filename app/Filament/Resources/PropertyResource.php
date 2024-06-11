@@ -49,6 +49,8 @@ class PropertyResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('address_id'),
+                TextInput::make('bank_id'),
                 TextInput::make('contract')
                     ->maxLength(255)
                     ->label('ID BRP'),
@@ -59,28 +61,12 @@ class PropertyResource extends Resource
                 TextInput::make('codigo_catastral')
                     ->maxLength(255)
                     ->label('Código Catastral'),
-                Select::make('state_id')
-                    ->relationship('state', 'name')
-                    ->label('Departamento'),
-                Select::make('city_id')
-                    ->relationship('city', 'name')
-                    ->label('Ciudad o municipio'),
-                TextInput::make('neighborhood')
-                    ->maxLength(255)
-                    ->label('Barrio o Vereda'),
-                TextInput::make('address')
-                    ->maxLength(255)
-                    ->label('Dirección'),
                 TextInput::make('escritura')
                     ->maxLength(255)
                     ->label('No. de Escritura'),
                 Select::make('notary_office_id')
                     ->relationship('notaryOffice', 'id')
                     ->label('Notaría'),
-                TextInput::make('customer')
-                    ->maxLength(255)
-                    ->default('Banco de Bogotá')
-                    ->label('Cliente'),
                 Radio::make('type')
                     ->options([
                         'rural'  => 'Rural',
@@ -96,10 +82,7 @@ class PropertyResource extends Resource
                 TextInput::make('conservation_state')
                     ->maxLength(255)
                     ->label('Estado de conservación'),
-                TextInput::make('owner')
-                    ->maxLength(255)
-                    ->label('Propietario'),
-                TextInput::make('ownership_percentage')
+                TextInput::make('bank_ownership_percentage')
                     ->numeric()
                     ->minValue(0.1)
                     ->maxValue(100)
@@ -115,19 +98,10 @@ class PropertyResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('state.name')
-                    ->sortable()
-                    ->label('Departamento'),
-                TextColumn::make('city.name')
-                    ->sortable()
-                    ->label('Ciudad o municipio'),
                 TextColumn::make('notaryOffice.id')
                     ->numeric()
                     ->sortable()
                     ->label('Notaría'),
-                TextColumn::make('customer')
-                    ->searchable()
-                    ->label('Cliente'),
                 TextColumn::make('contract')
                     ->searchable()
                     ->label('ID BRP'),
@@ -143,9 +117,6 @@ class PropertyResource extends Resource
                 TextColumn::make('neighborhood')
                     ->searchable()
                     ->label('Barrio o Vereda'),
-                TextColumn::make('address')
-                    ->searchable()
-                    ->label('Dirección'),
                 TextColumn::make('type')
                     ->searchable()
                     ->label('Tipo de predio'),
@@ -159,10 +130,7 @@ class PropertyResource extends Resource
                 TextColumn::make('conservation_state')
                     ->searchable()
                     ->label('Estado de conservación'),
-                TextColumn::make('owner')
-                    ->searchable()
-                    ->label('Propietario'),
-                IconColumn::make('ownership_percentage')
+                IconColumn::make('bank_ownership_percentage')
                     ->boolean()
                     ->label('% de derechos'),
                 TextColumn::make('disabled_at')

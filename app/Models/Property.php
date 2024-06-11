@@ -14,22 +14,18 @@ class Property extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'state_id',
-        'city_id',
+        'bank_id',
         'notary_office_id',
-        'customer',
+        'address_id',
         'contract',
         'matricula_inmobiliaria',
         'codigo_catastral',
         'escritura',
-        'neighborhood',
-        'address',
         'type',
         'is_horizontal',
         'area',
         'conservation_state',
-        'owner',
-        'ownership_percentage',
+        'bank_ownership_percentage',
     ];
 
     protected function casts(): array
@@ -42,19 +38,11 @@ class Property extends Model
     }
 
     /**
-     * @return BelongsTo<State, Property>
+     * @return BelongsTo<Address, Property>
      */
-    public function state(): BelongsTo
+    public function address(): BelongsTo
     {
-        return $this->belongsTo(State::class);
-    }
-
-    /**
-     * @return BelongsTo<City, Property>
-     */
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(Address::class);
     }
 
     /**
@@ -79,5 +67,13 @@ class Property extends Model
     public function PublicServices(): HasMany
     {
         return $this->hasMany(PublicService::class);
+    }
+
+    /**
+     * @return BelongsTo<Bank, Property>
+     */
+    public function bank(): BelongsTo
+    {
+        return $this->belongsTo(Bank::class);
     }
 }

@@ -211,7 +211,7 @@ it('can save a public service', function () {
         ->assertFormFieldExists('company')
         ->assertFormFieldExists('is_domiciled')
         ->fillForm([
-            'type'         => $publicService->type ? 'water' : 'electricity',
+            'type'         => $publicService->type === 'electricity' ? 'water' : 'electricity',
             'company'      => $newData->company,
             'is_domiciled' => ! $publicService->is_domiciled,
         ])
@@ -231,7 +231,7 @@ it('can save a public service', function () {
                 'is_domiciled' => $publicService->is_domiciled ? 'true' : 'false',
             ],
             'attributes' => [
-                'type'         => $publicService->type ? 'water' : 'electricity',
+                'type'         => $publicService->type === 'electricity' ? 'water' : 'electricity',
                 'company'      => $newData->company,
                 'is_domiciled' => ! $publicService->is_domiciled ? 'true' : 'false',
             ],

@@ -34,7 +34,6 @@ it('can list notary offices', function () {
         ->assertCanSeeTableRecords($notaryOffices)
         ->assertCountTableRecords(10)
         ->assertCanRenderTableColumn('number')
-        ->assertCanRenderTableColumn('state.name')
         ->assertCanRenderTableColumn('city.name')
         ->assertCanNotRenderTableColumn('created_at')
         ->assertCanNotRenderTableColumn('updated_at')
@@ -61,27 +60,23 @@ it('cannot render create page when user do not have permission', function () {
 
 it('can create a notary office', function () {
     $newData = NotaryOffice::factory()
-        ->for($this->state)
         ->for($this->city)
         ->make();
 
     livewire(CreateNotaryOffice::class)
         ->assertFormExists()
         ->assertFormFieldExists('number')
-        ->assertFormFieldExists('state_id')
         ->assertFormFieldExists('city_id')
         ->fillForm([
-            'number'   => $newData->number,
-            'state_id' => $newData->state_id,
-            'city_id'  => $newData->city_id,
+            'number'  => $newData->number,
+            'city_id' => $newData->city_id,
         ])
         ->call('create')
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(NotaryOffice::class, [
-        'number'   => $newData->number,
-        'state_id' => $newData->state_id,
-        'city_id'  => $newData->city_id,
+        'number'  => $newData->number,
+        'city_id' => $newData->city_id,
     ]);
 
     expect(Activity::all()->last())
@@ -92,9 +87,8 @@ it('can create a notary office', function () {
         ->changes->toEqual(collect([
             'old'        => [],
             'attributes' => [
-                'number'     => $newData->number,
-                'state.name' => $newData->state->name,
-                'city.name'  => $newData->city->name,
+                'number'    => $newData->number,
+                'city.name' => $newData->city->name,
             ],
         ]));
 
@@ -104,15 +98,13 @@ it('can create a notary office', function () {
 it('can validate create input', function () {
     livewire(CreateNotaryOffice::class)
         ->fillForm([
-            'number'   => null,
-            'state_id' => null,
-            'city_id'  => null,
+            'number'  => null,
+            'city_id' => null,
         ])
         ->call('create')
         ->assertHasFormErrors([
-            'number'   => 'required',
-            'state_id' => 'required',
-            'city_id'  => 'required',
+            'number'  => 'required',
+            'city_id' => 'required',
         ])
         ->fillForm([
             'number' => 0,
@@ -150,9 +142,8 @@ it('can retrieve data', function () {
         'record' => $notaryOffice->getRouteKey(),
     ])
         ->assertFormSet([
-            'number'   => $notaryOffice->number,
-            'state_id' => $notaryOffice->state_id,
-            'city_id'  => $notaryOffice->city_id,
+            'number'  => $notaryOffice->number,
+            'city_id' => $notaryOffice->city_id,
         ]);
 
     $this->assertAuthenticated();
@@ -160,12 +151,10 @@ it('can retrieve data', function () {
 
 it('can save a notary office', function () {
     $notaryOffice = NotaryOffice::factory()
-        ->for($this->state)
         ->for($this->city)
         ->create();
 
     $newData = NotaryOffice::factory()
-        ->for($this->state)
         ->for($this->city)
         ->make();
 
@@ -174,12 +163,10 @@ it('can save a notary office', function () {
     ])
         ->assertFormExists()
         ->assertFormFieldExists('number')
-        ->assertFormFieldExists('state_id')
         ->assertFormFieldExists('city_id')
         ->fillForm([
-            'number'   => $newData->number,
-            'state_id' => $newData->state_id,
-            'city_id'  => $newData->city_id,
+            'number'  => $newData->number,
+            'city_id' => $newData->city_id,
         ])
         ->call('save')
         ->assertHasNoFormErrors();
@@ -192,19 +179,16 @@ it('can save a notary office', function () {
         ->causer_id->toBe($this->superAdmin->id)
         ->changes([
             'old' => [
-                'number'   => $notaryOffice->number,
-                'state.id' => $notaryOffice->state_id,
-                'city.id'  => $notaryOffice->city_id,
+                'number'  => $notaryOffice->number,
+                'city.id' => $notaryOffice->city_id,
             ],
             'attributes' => [
-                'number'   => $newData->number,
-                'state.id' => $newData->state_id,
-                'city.id'  => $newData->city_id,
+                'number'  => $newData->number,
+                'city.id' => $newData->city_id,
             ],
         ])
         ->and($notaryOffice->refresh())
         ->number->toBe($newData->number)
-        ->state_id->toBe($newData->state_id)
         ->city_id->toBe($newData->city_id);
 });
 
@@ -215,15 +199,13 @@ it('can validate edit input', function () {
         'record' => $notaryOffice->getRouteKey(),
     ])
         ->fillForm([
-            'number'   => null,
-            'state_id' => null,
-            'city_id'  => null,
+            'number'  => null,
+            'city_id' => null,
         ])
         ->call('save')
         ->assertHasFormErrors([
-            'number'   => 'required',
-            'state_id' => 'required',
-            'city_id'  => 'required',
+            'number'  => 'required',
+            'city_id' => 'required',
         ])
         ->fillForm([
             'number' => 0,

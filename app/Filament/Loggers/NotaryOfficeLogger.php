@@ -24,9 +24,6 @@ class NotaryOfficeLogger extends Logger
             ->fields([
                 Field::make('number')
                     ->label('Número de Notaría'),
-                Field::make('state.name')
-                    ->hasOne('state')
-                    ->label('Departamento'),
                 Field::make('city.name')
                     ->hasOne('city')
                     ->label('Ciudad'),
