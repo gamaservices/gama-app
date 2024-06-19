@@ -3,6 +3,7 @@
 use App\Models\Address;
 use App\Models\Bank;
 use App\Models\NotaryOffice;
+use App\Models\PropertyAdmin;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +14,11 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Address::class);
+            $table->foreignIdFor(NotaryOffice::class);
+            $table->foreignIdFor(Bank::class);
+            $table->foreignIdFor(PropertyAdmin::class);
+
             $table->string('contract')->nullable();
             $table->string('matricula_inmobiliaria');
             $table->string('codigo_catastral')->nullable();
@@ -28,10 +34,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->softDeletes();
-
-            $table->foreignIdFor(Address::class);
-            $table->foreignIdFor(NotaryOffice::class);
-            $table->foreignIdFor(Bank::class);
         });
     }
 
