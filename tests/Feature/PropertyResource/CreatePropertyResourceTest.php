@@ -42,6 +42,7 @@ it('can create a property', function () {
         ->assertFormFieldExists('disabled_at')
         ->assertFormFieldExists('acquired_at')
         ->fillForm([
+            'property_admin_id'         => $newData->property_admin_id,
             'bank_id'                   => $newData->bank_id,
             'address_id'                => $newData->address_id,
             'notary_office_id'          => $newData->notary_office_id,
@@ -59,6 +60,7 @@ it('can create a property', function () {
         ->assertHasNoFormErrors();
 
     $this->assertDatabaseHas(Property::class, [
+        'property_admin_id'         => $newData->property_admin_id,
         'notary_office_id'          => $newData->notary_office_id,
         'contract'                  => $newData->contract,
         'matricula_inmobiliaria'    => $newData->matricula_inmobiliaria,

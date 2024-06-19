@@ -20,7 +20,7 @@ class PropertyFactory extends Factory
      */
     public function definition(): array
     {
-        $propertyAdmin = PropertyAdmin::inRandomOrder()->first();
+        $propertyAdmin = PropertyAdmin::inRandomOrder()->first() ?? PropertyAdmin::factory()->create();
         $bank = Bank::inRandomOrder()->first();
         $city = City::inRandomOrder()->first();
         $address = Address::factory()->for($city)->create();
