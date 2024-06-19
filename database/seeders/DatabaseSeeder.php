@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             CitySeeder::class,
             BankSeeder::class,
+            PropertyAdminSeeder::class,
             PropertySeeder::class,
         ]);
 

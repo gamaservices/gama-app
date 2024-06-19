@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Property;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,7 +15,11 @@ class InsuranceFactory extends Factory
      */
     public function definition(): array
     {
+        $property = Property::inRandomOrder()->first() ?? Property::factory()->create();
+
         return [
+            'property_id' => $property->id,
+
             'policy_number' => fake()->bothify('RC-####'),
             'type'          => 'Responsabilidad Civíl',
             'company'       => 'Seguros Sura',

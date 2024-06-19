@@ -49,6 +49,7 @@ class PropertyResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('property_admin_id'),
                 TextInput::make('address_id'),
                 TextInput::make('bank_id'),
                 TextInput::make('contract')
