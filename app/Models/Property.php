@@ -15,8 +15,10 @@ class Property extends Model
 
     protected $fillable = [
         'bank_id',
+        'property_admin_id',
         'notary_office_id',
         'address_id',
+
         'contract',
         'matricula_inmobiliaria',
         'codigo_catastral',
@@ -75,5 +77,13 @@ class Property extends Model
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    /**
+     * @return BelongsTo<PropertyAdmin, Property>
+     */
+    public function propertyAdmin(): BelongsTo
+    {
+        return $this->belongsTo(PropertyAdmin::class);
     }
 }
