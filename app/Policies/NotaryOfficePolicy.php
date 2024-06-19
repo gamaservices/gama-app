@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\NotaryOffice;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -15,7 +14,7 @@ class NotaryOfficePolicy
         return $user->can('view_any_notary::office');
     }
 
-    public function view(User $user, NotaryOffice $notaryOffice): bool
+    public function view(User $user): bool
     {
         return $user->can('view_notary::office');
     }
@@ -25,12 +24,12 @@ class NotaryOfficePolicy
         return $user->can('create_notary::office');
     }
 
-    public function update(User $user, NotaryOffice $notaryOffice): bool
+    public function update(User $user): bool
     {
         return $user->can('update_notary::office');
     }
 
-    public function delete(User $user, NotaryOffice $notaryOffice): bool
+    public function delete(User $user): bool
     {
         return $user->can('delete_notary::office');
     }
@@ -40,7 +39,7 @@ class NotaryOfficePolicy
         return $user->can('delete_any_notary::office');
     }
 
-    public function forceDelete(User $user, NotaryOffice $notaryOffice): bool
+    public function forceDelete(User $user): bool
     {
         return $user->can('force_delete_notary::office');
     }
@@ -50,7 +49,7 @@ class NotaryOfficePolicy
         return $user->can('force_delete_any_notary::office');
     }
 
-    public function restore(User $user, NotaryOffice $notaryOffice): bool
+    public function restore(User $user): bool
     {
         return $user->can('restore_notary::office');
     }
@@ -60,7 +59,7 @@ class NotaryOfficePolicy
         return $user->can('restore_any_notary::office');
     }
 
-    public function replicate(User $user, NotaryOffice $notaryOffice): bool
+    public function replicate(User $user): bool
     {
         return $user->can('replicate_notary::office');
     }
