@@ -18,7 +18,7 @@ class InsuranceFactory extends Factory
         $property = Property::inRandomOrder()->first() ?? Property::factory()->create();
 
         return [
-            'property_id'   => $property->id,
+            'property_id' => $property->id,
 
             'policy_number' => fake()->bothify('RC-####'),
             'type'          => 'Responsabilidad Civíl',
