@@ -17,7 +17,7 @@ class PublicServiceResource extends Resource
 {
     protected static ?string $model = PublicService::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'phosphor-lightbulb-duotone';
 
     protected static ?string $recordTitleAttribute = 'property_id';
 

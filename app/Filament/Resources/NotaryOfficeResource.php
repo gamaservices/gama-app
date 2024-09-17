@@ -20,7 +20,7 @@ class NotaryOfficeResource extends Resource
 {
     protected static ?string $model = NotaryOffice::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'phosphor-stamp-duotone';
 
     protected static ?string $modelLabel = 'Notaría';
 

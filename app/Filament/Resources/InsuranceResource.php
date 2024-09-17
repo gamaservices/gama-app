@@ -18,7 +18,7 @@ class InsuranceResource extends Resource
 
     protected static ?string $modelLabel = 'Seguro';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'phosphor-shield-check-duotone';
 
     protected static ?string $recordTitleAttribute = 'policy_number';
 

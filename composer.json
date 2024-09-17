@@ -11,6 +11,7 @@
         "php": "^8.2",
         "ext-pdo": "*",
         "bezhansalleh/filament-shield": "^3.2",
+        "codeat3/blade-phosphor-icons": "^2.0",
         "filament/filament": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11.0",

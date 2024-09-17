@@ -39,7 +39,7 @@ class PropertyResource extends Resource
 {
     protected static ?string $model = Property::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'phosphor-building-office-duotone';
 
     protected static ?string $recordTitleAttribute = 'matricula_inmobiliaria';
 
