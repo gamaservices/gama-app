@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $master = User::factory()
             ->create([
                 'name'  => 'Master',
-                'email' => 'master@gama.services',
+                'email' => 'master@gama.com',
             ]);
 
         Artisan::call('shield:super-admin --user=' . $master->id);
